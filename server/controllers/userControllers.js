@@ -72,11 +72,65 @@ export const userProfile = async (req, res, next) => {
     }
 };
 
+export const userProfileUpdate = async (req, res, next) => {
+    try {
+        const userId = req.user.id; // Get the user ID from the authenticated user
+        const { name, email, password } = req.body; // Get updated fields from request body
+    
+        const user = await User.findById(userId); // Find user by ID
+    
+        if (!user) {
+          return res.status(404).send('User not found');
+        }
+    
+        // Update user fields (conditionally, only if provided)
+        if (name) user.name = name;
+        if (email) user.email = email;
+    
+        // If the password is being updated, hash the new password
+        if (password) {
+          const salt = await bcrypt.genSalt(10);
+          user.password = await bcrypt.hash(password, salt);
+        }
+    
+        // Save the updated user data
+        await user.save();
+    
+        res.status(200).json({
+          message: 'Profile updated successfully',
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+          },
+        });
+      } catch (error) {
+        console.error(error);
+        res.status(500).send('Server error');
+      }
+    };
+
+
 export const userLogout = async (req, res, next) => {
     try {
 
         res.clearCookie('token')
         res.json({ success: true, message: "user logged out" });
+    } catch (error) {
+        console.log(error);
+        res.status(error.statusCode || 500).json(error.message || 'Internal server error')
+    }
+};
+
+export const userDelete = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+
+        const deletedUser = await User.findByIdAndDelete(userId);
+        if(!deletedUser){
+            return res.status(404).json({message:"User not found"});
+        }
+        res.clearCookie('token').status(200).json({message:"user deleted Sucessfully"});
     } catch (error) {
         console.log(error);
         res.status(error.statusCode || 500).json(error.message || 'Internal server error')
