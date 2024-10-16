@@ -9,7 +9,7 @@ export const adminLogin = async (req, res, next) => {
             return res.status(400).json({ message: "all fields are required" });
         }
 
-        const userExist = await User.findOne({ email });
+        const userExist = await Mentor.findOne({ email });
         if (!userExist) {
             return res.status(404).json({ success: false, message: "user does not exist" });
         }
@@ -34,7 +34,7 @@ export const adminProfile = async (req, res, next) => {
 
         const {user}=req
 
-        const userData = await User.findById(user.id).select('-password')
+        const userData = await Mentor.findById(user.id).select('-password')
 
         res.json({ success: true, message: "user profile fetched", userData });
     } catch (error) {
