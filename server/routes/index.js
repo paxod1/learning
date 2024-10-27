@@ -8,6 +8,7 @@ import { adminRouter } from "./adminRoutes.js";
 import { reviewRouter } from "./reviewRoutes.js";
 import { assignmentRouter } from "./assignmentRoutes.js";
 import { quizRouter } from "./quizRoutes.js";
+import { lectureRouter } from "./lectureRoutes.js";
 
 router.use('/user', userRouter)
 router.use('/mentor', mentorRouter)
@@ -17,6 +18,8 @@ router.use('/admin', adminRouter)
 router.use('/review', reviewRouter)
 router.use('/assignment', assignmentRouter)
 router.use('/quiz', quizRouter)
+router.use('/lectures', lectureRouter)
+
 
 
 

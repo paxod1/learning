@@ -1,9 +1,12 @@
 import bcrypt from 'bcrypt'
 import { generateToken } from '../utils/token.js';
 import { Mentor } from '../models/mentorModel.js';
+import { handleImageUpload } from "../utils/cloudinary.js";
+import { cloudinaryInstance } from "../config/cloudinaryConfig.js";
 
 export const mentorSignup = async (req, res, next) => {
     try {
+        let imageUrl;
         const { name, email, password, mobile, profilePic } = req.body;
         if (!name || !email || !password) {
             return res.status(400).json({ success: false, message: "all fields required" });
@@ -13,11 +16,18 @@ export const mentorSignup = async (req, res, next) => {
         if (isMentorExist) {
             return res.status(400).json({ message: "user already exist" });
         }
+        if (req.file) {
+            const cloudinaryRes = await cloudinaryInstance.uploader.upload(req.file.path);
+            imageUrl = cloudinaryRes.url;
+        
+        }
+
+        console.log('====imageUrl',imageUrl, );
 
         const saltRounds = 10;
         const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
-        const newMentor = new Mentor({ name, email, password: hashedPassword, mobile, profilePic });
+        const newMentor = new Mentor({ name, email, password: hashedPassword, mobile, profilePic: imageUrl });
         await newMentor.save();
 
         const token = generateToken(newMentor._id,'mentor');

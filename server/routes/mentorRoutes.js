@@ -1,9 +1,10 @@
 import e from "express";
 import { checkMentor, mentorDelete, mentorLogin, mentorLogout, mentorProfile, mentorProfileUpdate, mentorSignup } from "../controllers/mentorControllers.js";
 import { authMentor } from "../middlewares/authMentor.js";
+import { upload } from "../middlewares/multer.js";
 const router = e.Router();
 
-router.post("/sign-up", mentorSignup);
+router.post("/sign-up", upload.single('profilePic'), mentorSignup);
 
 router.post("/log-in", mentorLogin);
 

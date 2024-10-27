@@ -1,10 +1,15 @@
 import bcrypt from 'bcrypt'
 import { User } from "../models/userModel.js";
 import { generateToken } from '../utils/token.js';
+import { handleImageUpload } from "../utils/cloudinary.js";
+import { cloudinaryInstance } from "../config/cloudinaryConfig.js";
 
 export const userSignup = async (req, res, next) => {
     try {
+        let imageUrl;
         const { name, email, password, mobile, profilePic } = req.body;
+        console.log("body------------",req.body)
+
         if (!name || !email || !password) {
             return res.status(400).json({ success: false, message: "all fields required" });
         }
@@ -13,11 +18,17 @@ export const userSignup = async (req, res, next) => {
         if (isUserExist) {
             return res.status(400).json({ message: "user already exist" });
         }
+        if (req.file) {
+            const cloudinaryRes = await cloudinaryInstance.uploader.upload(req.file.path);
+            imageUrl = cloudinaryRes.url;
+        }
+
+        console.log('====imageUrl',imageUrl, );
 
         const saltRounds = 10;
         const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
-        const newUser = new User({ name, email, password: hashedPassword, mobile, profilePic });
+        const newUser = new User({ name, email, password: hashedPassword, mobile, profilePic: imageUrl });
         await newUser.save();
 
         const token = generateToken(newUser._id);
@@ -108,8 +119,7 @@ export const userProfileUpdate = async (req, res, next) => {
         console.error(error);
         res.status(500).send('Server error');
       }
-    };
-
+};
 
 export const userLogout = async (req, res, next) => {
     try {
