@@ -9,6 +9,7 @@ import { reviewRouter } from "./reviewRoutes.js";
 import { assignmentRouter } from "./assignmentRoutes.js";
 import { quizRouter } from "./quizRoutes.js";
 import { lectureRouter } from "./lectureRoutes.js";
+import { paymentRouter } from "./paymentRoutes.js";
 
 router.use('/user', userRouter)
 router.use('/mentor', mentorRouter)
@@ -19,6 +20,7 @@ router.use('/review', reviewRouter)
 router.use('/assignment', assignmentRouter)
 router.use('/quiz', quizRouter)
 router.use('/lectures', lectureRouter)
+router.use('/payment',paymentRouter)
 
 
 

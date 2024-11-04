@@ -3,6 +3,7 @@ import { useFetch } from "../../hooks/UseFetch";
 import { CartCards } from "../../components/user/Cards";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../../config/axiosInstance";
+import { loadStripe} from  "@stripe/stripe-js";
 
 export const Cart = () => {
     const [cartData, isLoading, error] = useFetch("/cart/get-cart");
@@ -23,11 +24,41 @@ export const Cart = () => {
         }
     };
 
+    const makePayment = async () => {
+        try {
+            const stripe = await loadStripe(import.meta.env.VITE_STRIPE_Publishable_key);
+
+            const session =await axiosInstance({
+                url: "/payment/create-checkout-session",
+                method:"POST",
+                data:{ products: cartData?.courses},
+            });
+            console.log(session,"------session");
+            const result = stripe.redirectToCheckout({
+                sessionId: session.data.id,
+            })
+            
+        } catch (error) {
+            console.log(error);
+            
+            
+        }
+        
+    }
+
     return (
+        <div>
         <div>
             {cartData?.courses?.map((value) => (
                 <CartCards item={value} key={value._id} handleRemove={handleRemoveItem} />
             ))}
+        </div>
+        <div className="w-6/12 bg-base-300 flex flex-col items-center gap-5">
+        <h2>Price Summary</h2>
+        <h2>Total price: {cartData?.totalPrice}</h2>
+        <button onClick={makePayment} className="btn btn-success">Checkout</button>
+
+        </div>
         </div>
     );
 };
