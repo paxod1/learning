@@ -33,7 +33,10 @@ export const userSignup = async (req, res, next) => {
 
         const token = generateToken(newUser._id);
 
-        res.cookie("token", token);
+        res.cookie("token", token ,{
+            sameSite:"None",
+            secure:true,
+            httpOnly:true});
 
         res.json({ success: true, message: "user created successfully" });
     } catch (error) {
@@ -61,7 +64,11 @@ export const userLogin = async (req, res, next) => {
 
         const token = generateToken(userExist._id);
 
-        res.cookie("token", token);
+        res.cookie("token", token , {
+            sameSite:"None",
+            secure:true,
+            httpOnly:true});
+
         res.json({ success: true, message: "user login successfull" });
     } catch (error) {
         console.log(error);
@@ -124,7 +131,12 @@ export const userProfileUpdate = async (req, res, next) => {
 export const userLogout = async (req, res, next) => {
     try {
 
-        res.clearCookie('token')
+        res.clearCookie('token', {
+            sameSite:"None",
+            secure:true,
+            httpOnly:true
+        });
+
         res.json({ success: true, message: "user logged out" });
     } catch (error) {
         console.log(error);
@@ -140,7 +152,11 @@ export const userDelete = async (req, res, next) => {
         if(!deletedUser){
             return res.status(404).json({message:"User not found"});
         }
-        res.clearCookie('token').status(200).json({message:"user deleted Sucessfully"});
+        res.clearCookie('token', {
+            sameSite:"None",
+            secure:true,
+            httpOnly:true
+        }).status(200).json({message:"user deleted Sucessfully"});
     } catch (error) {
         console.log(error);
         res.status(error.statusCode || 500).json(error.message || 'Internal server error')
