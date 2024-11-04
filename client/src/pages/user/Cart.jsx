@@ -35,7 +35,7 @@ export const Cart = () => {
             });
             console.log(session,"------session");
             const result = stripe.redirectToCheckout({
-                sessionId: session.data.id,
+                sessionId: session?.data?.sessionId,
             })
             
         } catch (error) {
