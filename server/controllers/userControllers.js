@@ -76,7 +76,7 @@ export const userProfile = async (req, res, next) => {
 
         const userData = await User.findById(user.id).select('-password')
 
-        res.json({ success: true, message: "user profile fetched", userData });
+        res.json({ success: true, message: "user profile fetched", data: userData  });
     } catch (error) {
         console.log(error);
         res.status(error.statusCode || 500).json(error.message || 'Internal server error')

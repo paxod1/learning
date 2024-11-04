@@ -10,7 +10,7 @@ router.get("/profile", authUser, userProfile);
 router.put("/profile-update", authUser, userProfileUpdate);
 router.delete("/profile-delete", authUser, userDelete);
 router.post("/log-out", authUser, userLogout);
-router.get("/check-user", checkUser);
+router.get("/check-user", authUser, checkUser);
 
 
 
