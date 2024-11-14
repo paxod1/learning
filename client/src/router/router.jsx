@@ -58,6 +58,7 @@ import { MentorHome } from "../pages/mentor/MentorHome";
             element: <CourseDetails />,
 
         },
+        
        {
             path:'user',
             element: <ProtectRoute />,
