@@ -32,7 +32,10 @@ export const mentorSignup = async (req, res, next) => {
 
         const token = generateToken(newMentor._id,'mentor');
 
-        res.cookie("token", token);
+        res.cookie("token", token ,{
+            sameSite:"None",
+            secure:true,
+            httpOnly:true});
 
         res.json({ success: true, message: "mentor account created successfully" });
     } catch (error) {
@@ -60,7 +63,10 @@ export const mentorLogin = async (req, res, next) => {
 
         const token = generateToken(isMentorExist._id,'mentor');
 
-        res.cookie("token", token);
+        res.cookie("token", token , {
+            sameSite:"None",
+            secure:true,
+            httpOnly:true});
         res.json({ success: true, message: "menotr login successfull" });
     } catch (error) {
         console.log(error);
@@ -76,7 +82,7 @@ export const mentorProfile = async (req, res, next) => {
 
         const userData = await Mentor.findById(user.id).select('-password')
 
-        res.json({ success: true, message: "user profile fetched", userData });
+        res.json({ success: true, message: "mentor profile fetched", userData });
     } catch (error) {
         console.log(error);
         res.status(error.statusCode || 500).json(error.message || 'Internal server error')
@@ -124,7 +130,11 @@ export const mentorProfileUpdate = async (req, res, next) => {
 export const mentorLogout = async (req, res, next) => {
     try {
 
-        res.clearCookie('token')
+        res.clearCookie('token', {
+            sameSite:"None",
+            secure:true,
+            httpOnly:true
+        });
         res.json({ success: true, message: "user logged out" });
     } catch (error) {
         console.log(error);
@@ -140,7 +150,11 @@ export const mentorDelete = async (req, res, next) => {
         if(!deletedUser){
             return res.status(404).json({message:"User not found"});
         }
-        res.clearCookie('token').status(200).json({message:"user deleted Sucessfully"});
+        res.clearCookie('token', {
+            sameSite:"None",
+            secure:true,
+            httpOnly:true
+        }).status(200).json({message:"user deleted Sucessfully"});
     } catch (error) {
         console.log(error);
         res.status(error.statusCode || 500).json(error.message || 'Internal server error')

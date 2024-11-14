@@ -1,27 +1,27 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { CircleUser } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
+import { Link } from "react-router-dom";    
 import { DarkMode } from "../shared/DarkMode";
 
-export const Header = () => {
-
-    const navigate =useNavigate()
-
+export const MentorHeader = () => {
     return (
         <div className="flex justify-between items-center w-full px-20  h-24 shadow-2xl  ">
             <Link to={"/"}>
-                <div className="text-3xl font-bold"> E-LEARNING</div>
+                <div className="text-3xl font-bold">Logo</div>
             </Link>
-            <div className="flex items-center gap-10">
             <nav className="flex gap-16 items-center font-semibold">
                 <Link to={"/"}>Home</Link>
                 <Link to={"/about"}>About</Link>
                 <Link to={"/course"}>Course</Link>
             </nav>
 
-            <div className="flex items-center gap-10">
-                <DarkMode/>
-                <button onClick={()=>navigate('/signup')} className="btn btn-primary">Join us</button>
-            </div>
+            <div className="flex gap-14 items-center ">
+                <DarkMode />
+                
+                <Link to={"/profile"}>
+                    <CircleUser />
+                </Link>
             </div>
         </div>
     );

@@ -22,7 +22,8 @@ export const LoginPage = ({ role = "user" }) => {
         user.profile_route = "/mentor/profile";
         user.signup_route = "/mentor/signup";
     }   
-
+        
+    
     // console.log(user, "=====user");
 
     const onSubmit = async (data) => {
@@ -32,25 +33,7 @@ export const LoginPage = ({ role = "user" }) => {
                     url: user.login_api,
                     data,
                 });
-        // console.log("Data-------",data);
-        // axiosInstance
-
-        // const response = await axiosInstance({
-        //     method:"POST",
-        //     url:'/user/log-in',
-        //     data
-        // })
-
-       //console.log("response--------",response);
        
-
-        // try {
-        //     const response = await axiosInstance({
-        //         method: "POST",
-        //         url: user.login_api,
-        //         data,
-        //     });
-        //     // const response = await axiosInstance({ method: "POST", url: user.login_api, data });
             console.log(response, "====response");
             toast.success("Log-in success");
             navigate(user.profile_route);

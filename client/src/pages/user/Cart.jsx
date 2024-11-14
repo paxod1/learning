@@ -17,7 +17,13 @@ export const Cart = () => {
                 url: "/cart/remove-course",
                 data: { courseId : courseId },
             });
+            
             toast.success("item removed from cart");
+            
+            console.log("CourseID=====",courseId);
+            
+            
+
         } catch (error) {
             console.log(error);
             toast.error(error?.response?.data?.message || "error while removing product");

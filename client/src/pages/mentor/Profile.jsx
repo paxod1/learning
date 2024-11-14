@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useNavigate } from "react-router-dom";
-import { clearUser } from "../../redux/features/userSlice";
+import { clearMentor } from "../../redux/features/mentorSlice";
 import { useDispatch } from "react-redux";
 
-export const Profile = () => {
+export const MentorProfile = () => {
     const [user, setUser] = useState({});
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const fetchUserProfile = async () => {
+    const fetchMentorProfile = async () => {
         try {
             const response = await axiosInstance({
                 method: "GET",
-                url: "/user/profile",
+                url: "/mentor/profile",
             });
             setUser(response?.data?.data);
         } catch (error) {
@@ -27,9 +27,9 @@ export const Profile = () => {
         try {
             const response = await axiosInstance({
                 method: "POST",
-                url: "/user/log-out",
+                url: "/mentor/log-out",
             });
-            dispatch(clearUser());
+            dispatch(clearMentor());
             navigate('/')
         } catch (error) {
             console.log(error);
@@ -39,7 +39,7 @@ export const Profile = () => {
     
 
     useEffect(() => {
-        fetchUserProfile();
+        fetchMentorProfile();
     }, []);
 
     return (

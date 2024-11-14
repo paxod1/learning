@@ -10,6 +10,12 @@ import { LoginPage } from "../pages/shared/LoginPage";
 import { ProtectRoute } from "./ProtectRoute";
 import { Profile } from "../pages/user/Profile";
 import { Cart } from "../pages/user/Cart";
+import { SignupPage } from "../pages/shared/SignupPage";
+import { MentorLayout } from "../layout/MentorLayout";
+import { MentorProfile } from "../pages/mentor/Profile";
+import { MentorAbout } from "../pages/mentor/MentorAbout";
+import { MentorContact } from "../pages/mentor/MentorContact";
+import { MentorHome } from "../pages/mentor/MentorHome";
 
 
  export const router = createBrowserRouter([
@@ -20,15 +26,13 @@ import { Cart } from "../pages/user/Cart";
       children: [
         { 
           path: "signup",
-          element: <h2>
-            Sign-up Page
-          </h2>,
+          element: <SignupPage />
         },
         { 
           path: "login",
           element: <LoginPage />,
 
-      },
+        },
         { 
             path: "",
             element: <Home />,
@@ -61,7 +65,7 @@ import { Cart } from "../pages/user/Cart";
               {
                 path: "profile",
                 element: <Profile/>,
-            },
+              },
               {
                 path: 'cart',
                 element: <Cart />
@@ -90,12 +94,53 @@ import { Cart } from "../pages/user/Cart";
     },
     {
       path: "mentor",
-      // element: ,
+      element: <MentorLayout />,
       children: [
+          {
+              path: "signup",
+              element: <SignupPage />,
+          },
           {
               path: "login",
               element: <LoginPage role="mentor" />,
           },
+          { 
+            path: "",
+            element: <MentorHome />,
+
+          },
+          { 
+            path: "about",
+            element: <MentorAbout />,
+
+          },
+          { 
+            path: "contact",
+            element: <MentorContact />,
+
+          },
+          { 
+            path: "course",
+            element: <Course />,
+
+          },
+          { 
+            path: "course-details/:id",
+            element: <CourseDetails />,
+
+          },
+
+          {
+              path: "",
+              element: <ProtectRoute />,
+              children: [
+                  {
+                      path: "profile",
+                      element: <MentorProfile />
+                  },
+                  
+              ],
+          },
       ],
   },
-  ]);
+]);

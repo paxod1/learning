@@ -69,7 +69,9 @@ export const removeCourseFromCart = async (req, res) => {
         }
 
         // Remove the course from the cart
-        cart.courses = cart.courses.filter((item) => !item.courseId.equals(courseId));
+        cart.courses = cart.courses.filter((item) => !item.courseId == (courseId));
+       
+
 
         // Recalculate the total price
         cart.calculateTotalPrice();
