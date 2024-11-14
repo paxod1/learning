@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Testimonials } from "../../pages/user/Testimonials";
 
 
 export const Home = ({ course }) => {
@@ -10,24 +11,52 @@ export const Home = ({ course }) => {
     <div >
 
       <div className="bg-cyan-50 min-h-96 flex p-10 "> {/* Outer container with cyan background */}
-        <div className="bg-yellow-300 p-10 shadow-lg   items-center w-2/3 space-x-10"> {/* Inner container with yellow background */}
-          <div className="max-w-lg text-center m-8 p-5  border-black">
-            <h1 className="text-4xl font-bold mb-4 font-serif text-black">We’ll get you to your goals</h1>
-            <p className="text-lg font-serif text-black">Go from beginner to advanced in the topic of your choice. Courses from ₹549 through tomorrow.</p>
+        <div className="carousel w-full">
+          <div id="slide1" className="carousel-item relative w-full">
+            <div className="bg-yellow-300 p-10 shadow-lg   items-center w-2/3 space-x-10"> {/* Inner container with yellow background */}
+              <div className="max-w-lg text-center m-16 p-5  border-black">
+                <h1 className="text-4xl font-bold mb-8 font-serif text-black">We’ll get you to your goals</h1>
+                <p className="text-lg font-serif text-black">Go from beginner to advanced in the topic of your choice. Courses from ₹549 through tomorrow.</p>
+              </div>
+            </div>
+            <div className='w-1/3 h-full bg-slate-50'>
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpkf9efzHYe8WAxXtdw8fUg6nAen8BTptXfg&s"
+                alt="Person"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+              <a href="#slide4" className="btn btn-circle">❮</a>
+              <a href="#slide2" className="btn btn-circle">❯</a>
+            </div>
           </div>
-        </div>
-        <div className='w-1/3  bg-slate-50'>
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpkf9efzHYe8WAxXtdw8fUg6nAen8BTptXfg&s"
-            alt="Person"
-            className="h-96 w-full object-cover"
-          />
+        
+          <div
+            id="slide2"
+            className="carousel-item relative w-full  bg-cover bg-center"
+            style={{ backgroundImage: "url('https://res.cloudinary.com/df2vobhg0/image/upload/v1731613243/Udemy_itqak8.jpg')" }}
+          >
+            <div className="absolute inset-0 bg-black bg-opacity-40"></div> {/* Optional dark overlay on image */}
+            <div className="absolute top-1/4 left-60   bg-white p-12 rounded-md shadow-lg max-w-sm">
+              <h2 className="text-gray-900 font-serif font-bold text-3xl">Skills that drive you forward</h2>
+              <p className="text-gray-700 font-serif mt-2">Technology and the world of work change fast — with us, you’re faster. Get the skills to achieve goals and stay competitive.</p>
+            </div>
+            <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+              <a href="#slide1" className="btn btn-circle">❮</a>
+              <a href="#slide3" className="btn btn-circle">❯</a>
+            </div>
+
+
+          </div>
+
+
         </div>
 
 
       </div>
 
-      <div className='items-center bg-white justify-between gap-50 flex  w-min-h-96'>
+      <div className='items-center bg-white justify-between gap-50 flex min-h-96'>
         {/* Container uses flex with wrapping and centered alignment */}
         <div className="flex flex-wrap justify-between items-center gap-6 p-10 bg-gray-100">
           {/* Web Development Course Card */}
@@ -88,7 +117,7 @@ export const Home = ({ course }) => {
             <div className="card-body h-64">
               <h2 className="card-title font-bold text-black">Python Course</h2>
               <p className="text-slate-900">
-              Master Python by building 100 projects in 100 days. Learn data science, automation, build websites, games and apps!
+                Master Python by building 100 projects in 100 days. Learn data science, automation, build websites, games and apps!
               </p>
               <p className="text-sm text-black font-bold">₹9000</p>
               <p className="text-base font-black text-red-950">Duration: 12 months</p>
@@ -98,7 +127,7 @@ export const Home = ({ course }) => {
                 </Link>
               </div>
             </div>
-          </div>     
+          </div>
           {/*JAVA Course Card*/}
           <div className="card card-compact  bg-white w-72 shadow-xl">
             <figure className="h-40 overflow-hidden">
@@ -139,7 +168,9 @@ export const Home = ({ course }) => {
 
       </div>
 
-      <div className='bg-cyan-100 min-h-80'>H3</div>
+      <div className='bg-cyan-100 min-h-80'>
+        <Testimonials />
+      </div>
     </div>
   )
 }
