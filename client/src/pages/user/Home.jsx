@@ -87,7 +87,7 @@ export const Home = ({ course }) => {
             <figure className="h-40 overflow-hidden">
               <img
                 className="h-full w-full object-cover"
-                src="https://res.cloudinary.com/df2vobhg0/image/upload/v1731563429/Github_lucamp.png"
+                src="https://res.cloudinary.com/df2vobhg0/image/upload/c_thumb,w_200,g_face/v1731438119/github_fdhvi2.png"
                 alt="GitHub Course"
               />
             </figure>

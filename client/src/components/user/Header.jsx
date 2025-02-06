@@ -16,7 +16,7 @@ export const Header = () => {
                
                 <div className="flex items-center gap-20">
             <nav className="flex gap-16 items-center font-semibold">
-                <Link to={"/"}>Home</Link>
+                <Link to={""}>Home</Link>
                 <Link to={"/about"}>About</Link>
                 <Link to={"/course"}>Course</Link>
                 
