@@ -26,6 +26,8 @@ export const CourseCard = ({ course }) => {
         <p className="text-lg text-gray-700 mt-2">₹{course?.price}</p>
         <div className="card-actions justify-end mt-4">
             <Link to={`/course-details/${course?._id}`}>
+           
+
                 <button className="btn btn-primary px-6 py-2 text-lg font-semibold rounded-lg bg-blue-500 hover:bg-blue-600 transition-all">More Details</button>
             </Link>
         </div>
