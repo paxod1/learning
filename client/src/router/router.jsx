@@ -12,11 +12,13 @@ import { Profile } from "../pages/user/Profile";
 import { Cart } from "../pages/user/Cart";
 import { SignupPage } from "../pages/shared/SignupPage";
 import { MentorLayout } from "../layout/MentorLayout";
-import { MentorProfile } from "../pages/mentor/Profile";
+import { MentorProfile } from "../pages/mentor/MentorProfile";
 import { MentorAbout } from "../pages/mentor/MentorAbout";
 import { MentorContact } from "../pages/mentor/MentorContact";
 import { MentorHome } from "../pages/mentor/MentorHome";
-
+import { ProtectedRouteMentor } from "./ProtectedRouteMentor";
+import { CreateCourse } from "../pages/mentor/CreateCourse";
+import { MentorCourse } from "../pages/mentor/MentorCourse";
 
  export const router = createBrowserRouter([
     {
@@ -96,52 +98,93 @@ import { MentorHome } from "../pages/mentor/MentorHome";
     {
       path: "mentor",
       element: <MentorLayout />,
+      errorElement: <ErrorPage role="mentor" />,  
       children: [
           {
               path: "signup",
-              element: <SignupPage />,
+              element: <SignupPage role="mentor"/>,
           },
           {
               path: "login",
               element: <LoginPage role="mentor" />,
           },
+          
           { 
             path: "",
-            element: <MentorHome />,
+            element: <ProtectedRouteMentor />,
+            children: [
+              {
+                  path: "dashboard",
+              },
+              {
+                  path: "all-courses",
+              },
+              {
+                  path: "/mentor/profile",
+                  element: <MentorProfile/>
+              },
+              {
+                  path: "create-course",
+                  element: <CreateCourse />,
+              },
+              { 
+                path: "/mentor/home",
+                element: <MentorHome />,
+    
+            },
+            { 
+                path: "/mentor/about",
+                element: <MentorAbout />,
+    
+            },
+            { 
+                path: "/mentor/contact",
+                element: <MentorContact />,
+    
+            },
+            { 
+                path: "/mentor/course",
+                element: <MentorCourse />,
+    
+            },
+          ],
+      },
+  ],
+},
+            
+            
+          // { 
+          //   path: "about",
+          //   element: <MentorAbout />,
 
-          },
-          { 
-            path: "about",
-            element: <MentorAbout />,
+          // },
+          // { 
+          //   path: "contact",
+          //   element: <MentorContact />,
 
-          },
-          { 
-            path: "contact",
-            element: <MentorContact />,
+          // },
+          // { 
+          //   path: "course",
+          //   element: <Course />,
 
-          },
-          { 
-            path: "course",
-            element: <Course />,
+          // },
+          // { 
+          //   path: "course-details/:id",
+          //   element: <CourseDetails />,
 
-          },
-          { 
-            path: "course-details/:id",
-            element: <CourseDetails />,
+          // },
 
-          },
-
-          {
-              path: "",
-              element: <ProtectRoute />,
-              children: [
-                  {
-                      path: "profile",
-                      element: <MentorProfile />
-                  },
+          // {
+          // //     path: "",
+          // //     element: <ProtectRoute />,
+          // //     children: [
+          // //         {
+          // //             path: "profile",
+          // //             element: <MentorProfile />
+          // //         },
                   
-              ],
-          },
-      ],
-  },
+          // //     ],
+          //  },
+      
+  
 ]);

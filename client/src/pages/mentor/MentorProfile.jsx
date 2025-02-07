@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useNavigate } from "react-router-dom";
-import { clearMentor } from "../../redux/features/mentorSlice";
+import { clearUser } from "../../redux/features/userSlice";
 import { useDispatch } from "react-redux";
 
 export const MentorProfile = () => {
@@ -10,7 +10,7 @@ export const MentorProfile = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const fetchMentorProfile = async () => {
+    const fetchUserProfile = async () => {
         try {
             const response = await axiosInstance({
                 method: "GET",
@@ -29,7 +29,7 @@ export const MentorProfile = () => {
                 method: "POST",
                 url: "/mentor/log-out",
             });
-            dispatch(clearMentor());
+            dispatch(clearUser());
             navigate('/')
         } catch (error) {
             console.log(error);
@@ -39,7 +39,7 @@ export const MentorProfile = () => {
     
 
     useEffect(() => {
-        fetchMentorProfile();
+        fetchUserProfile();
     }, []);
 
     return (
