@@ -8,10 +8,12 @@ export const authAdmin = (req,res,next)=>{
         }
         
         const tokenVerified = jwt.verify(token,process.env.JWT_SECRET_KEY);
+        console.log("Token verification result:", tokenVerified);
         if(!tokenVerified){
             return res.status(401).json({message:'user not autherised'}) 
-        }
-
+        }      
+        
+                
         
         if(tokenVerified.role !== 'admin' ){
             return res.status(401).json({message:'access denied'}) 

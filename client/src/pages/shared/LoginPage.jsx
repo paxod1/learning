@@ -21,7 +21,14 @@ export const LoginPage = ({ role = "user" }) => {
         user.login_api = "/mentor/log-in";
         user.profile_route = "/mentor/profile";
         user.signup_route = "/mentor/signup";
-    }   
+    } 
+    
+        if(role == "admin"){
+        user.role = "admin";
+        user.login_api = "/admins/log-in";
+        user.profile_route = "/admin/profile";
+        
+    }
         
     
     // console.log(user, "=====user");

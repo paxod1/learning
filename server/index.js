@@ -3,6 +3,7 @@ import { connectDB } from "./config/db.js";
 import { apiRouter } from "./routes/index.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { createAdmin } from "./controllers/adminController.js";
 
 
 const app = express();
@@ -18,10 +19,11 @@ app.use(
   ));
 app.use(cookieParser());
 
-
-
-connectDB();
-console.log("Hello");
+connectDB().then(() => {
+  console.log("Database connected successfully.");
+}).catch((error) => {
+  console.error("Database connection error:", error);
+});
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

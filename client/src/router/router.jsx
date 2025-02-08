@@ -19,6 +19,15 @@ import { MentorHome } from "../pages/mentor/MentorHome";
 import { ProtectedRouteMentor } from "./ProtectedRouteMentor";
 import { CreateCourse } from "../pages/mentor/CreateCourse";
 import { MentorCourse } from "../pages/mentor/MentorCourse";
+import { AdminLayout } from "../layout/AdminLayout";
+import { AdminProfile } from "../pages/admin/AdminProfile";
+import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin";
+import { AdminHome } from "../pages/admin/AdminHome";
+import { AdminAbout } from "../pages/admin/AdminAbout";
+import { AdminCourse } from "../pages/admin/AdminCourse";
+import { CreateCourseAdmin } from "../pages/admin/CreateCourseAdmin";
+import { AdminContact } from "../pages/admin/AdminContact";
+
 
  export const router = createBrowserRouter([
     {
@@ -151,6 +160,76 @@ import { MentorCourse } from "../pages/mentor/MentorCourse";
       },
   ],
 },
+{
+  path: "admin",
+  element: <AdminLayout />,
+  errorElement: <ErrorPage role="admin" />,  
+  children: [
+      {
+          path: "signup",
+          element: <SignupPage role="admin"/>,
+      },
+      {
+          path: "login",
+          element: <LoginPage role="admin" />,
+      },
+      
+      { 
+        path: "",
+        element: <ProtectedRouteAdmin />,
+        children: [
+         
+          {
+              path: "/admin/profile",
+              element: <AdminProfile/>
+          },
+          {
+              path: "create-course",
+              element: <CreateCourseAdmin />,
+          },
+          { 
+            path: "/admin/home",
+            element: <AdminHome />,
+
+        },
+        { 
+            path: "/admin/about",
+            element: <AdminAbout />,
+
+        },
+        { 
+            path: "/admin/contact",
+            element: <AdminContact />,
+
+        },
+        { 
+            path: "/admin/course",
+            element: <AdminCourse />,
+
+        },
+      ],
+  },
+],
+},
+// {
+//   path: "admin",
+//  element: <AdminLayout />,
+//   errorElement: <ErrorPage role="admin" />,
+//   children: [
+//       {
+//           path: "login",
+//           element: <LoginPage role="admin" />,
+//       },
+//       {
+//         path: "/admin/profile",
+//         element: <AdminProfile/>
+//     },
+     
+//   ],
+// },
+]);
+
+
             
             
           // { 
@@ -187,4 +266,4 @@ import { MentorCourse } from "../pages/mentor/MentorCourse";
           //  },
       
   
-]);
+
