@@ -47,7 +47,7 @@ export const LoginPage = ({ role = "user" }) => {
                 toast.error(response.data.message);
             }
         } catch (error) {
-            toast.error("Login failed");
+            toast.error(error.response?.data?.message);
             console.error("Login error:", error);
         }
     };
