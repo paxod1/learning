@@ -27,27 +27,59 @@ export const createAssignment = async (req, res) => {
 export const submitAssignment = async (req, res) => {
     try {
         const { assignmentId, content } = req.body;
+
+        if (!content.trim()) {
+            return res.status(400).json({ message: "Assignment is not finished!" });
+        }
+
         const assignment = await Assignment.findById(assignmentId);
-        
         if (!assignment) return res.status(404).json({ message: "Assignment not found" });
 
-         // Check if the student has already submitted this assignment
-         const existingSubmission = assignment.submissions.find(
-            (submission) => submission.studentId.toString() === req.user.id
-        );
-
+        // Check if the student has already submitted
+        const existingSubmission = assignment.submissions.find(sub => sub.studentId.toString() === req.user.id);
         if (existingSubmission) {
             return res.status(409).json({ message: "You have already submitted this assignment" });
         }
-        
+
         assignment.submissions.push({
             studentId: req.user.id,
             content,
             submittedAt: new Date()
         });
+
         await assignment.save();
-        
         res.status(200).json({ message: "Assignment submitted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error });
+    }
+};
+
+//Get Assignment by ID (for viewing before submission)
+export const getAssignmentById = async (req, res) => {
+    try {
+        const { assignmentId } = req.params;
+        console.log("Received assignmentId:", assignmentId);  
+       // const assignment = await Assignment.findById(assignmentId);
+         const  assignment = await Assignment.findOne({ _id: assignmentId }); 
+
+        if (!assignment) return res.status(404).json({ message: "Assignment not found" });
+
+        res.status(200).json(assignment);
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error });
+    }
+};
+
+//Get All Assignments (without submissions)
+export const getAllAssignments = async (req, res) => {
+    try {
+        const assignments = await Assignment.find({}, "-submissions"); // Exclude submissions
+
+        if (!assignments.length) {
+            return res.status(200).json([]); // Return empty array if no assignments
+        }
+
+        res.status(200).json(assignments);
     } catch (error) {
         res.status(500).json({ message: "Server error", error });
     }
@@ -95,3 +127,5 @@ export const removeAssignment = async (req, res) => {
         res.status(500).json({ message: "Server error", error });
     }
 };
+
+

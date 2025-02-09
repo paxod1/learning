@@ -25,8 +25,14 @@ import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin";
 import { AdminHome } from "../pages/admin/AdminHome";
 import { AdminAbout } from "../pages/admin/AdminAbout";
 import { AdminCourse } from "../pages/admin/AdminCourse";
-import { CreateCourseAdmin } from "../pages/admin/CreateCourseAdmin";
 import { AdminContact } from "../pages/admin/AdminContact";
+import { AdminCreateCourse } from "../pages/admin/AdminCreateCourse";
+import { MentorCourseDetails } from "../pages/mentor/MentorCourseDetails";
+import { AdminCourseDetails} from "../pages/admin/AdminCourseDetails";
+import { CreateAssignment } from "../pages/mentor/CreateAssignment";
+import { ViewAssignment } from "../pages/mentor/ViewAssignment";
+import { UserViewAssignment } from "../pages/user/UserViewAssignment";
+import { SubmitAssignment } from "../pages/user/SubmitAssignment";
 
 
  export const router = createBrowserRouter([
@@ -69,6 +75,16 @@ import { AdminContact } from "../pages/admin/AdminContact";
             element: <CourseDetails />,
 
         },
+        { 
+          path: "assignment",
+          element: <UserViewAssignment />,
+
+      },
+      { 
+        path: "submit-assignment/:assignmentId",
+        element: <SubmitAssignment />,
+
+    },
         
        {
             path:'user',
@@ -97,7 +113,9 @@ import { AdminContact } from "../pages/admin/AdminContact";
               {
                 path:"payment/cancel",
                 element: <h2>Payment cancelled</h2>
-              }
+              },
+              
+              
               
         ]
        }
@@ -117,11 +135,7 @@ import { AdminContact } from "../pages/admin/AdminContact";
               path: "login",
               element: <LoginPage role="mentor" />,
           },
-          { 
-            path: "/mentor/course-details/:id",
-            element: <CourseDetails />,
-
-        },
+          
           
           { 
             path: "",
@@ -138,9 +152,14 @@ import { AdminContact } from "../pages/admin/AdminContact";
                   element: <MentorProfile/>
               },
               {
-                  path: "create-course",
+                  path: "/mentor/create-course",
                   element: <CreateCourse />,
               },
+              { 
+                path: "/mentor/course-details/:id",
+                element: <MentorCourseDetails />,
+    
+            },
               { 
                 path: "/mentor/home",
                 element: <MentorHome />,
@@ -161,6 +180,16 @@ import { AdminContact } from "../pages/admin/AdminContact";
                 element: <MentorCourse />,
     
             },
+            { 
+              path: "/mentor/create-Assignment",
+              element: <CreateAssignment />,
+  
+          },
+          { 
+            path: "/mentor/view-Assignment",
+            element: <ViewAssignment/>,
+
+        },
           ],
       },
   ],
@@ -178,11 +207,7 @@ import { AdminContact } from "../pages/admin/AdminContact";
           path: "login",
           element: <LoginPage role="admin" />,
       },
-      { 
-        path: "/admin/course-details/:id",
-        element: <CourseDetails />,
-
-    },
+      
       
       { 
         path: "",
@@ -194,8 +219,8 @@ import { AdminContact } from "../pages/admin/AdminContact";
               element: <AdminProfile/>
           },
           {
-              path: "create-course",
-              element: <CreateCourseAdmin />,
+              path: "/admin/create-course",
+              element: <AdminCreateCourse />,
           },
           { 
             path: "/admin/home",
@@ -217,6 +242,11 @@ import { AdminContact } from "../pages/admin/AdminContact";
             element: <AdminCourse />,
 
         },
+        { 
+          path: "/admin/course-details/:id",
+          element: <AdminCourseDetails />,
+
+      },
       ],
   },
 ],

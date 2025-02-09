@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { clearUser } from "../../redux/features/userSlice";
 import { useDispatch } from "react-redux";
 
@@ -51,6 +51,7 @@ export const MentorProfile = () => {
             <button className="btn btn-outline">Edit </button>
             <br />
             <button onClick={handleLogout} className="btn btn-secondary"> Log-out </button>
+            <Link className="link link-hover" to={'/mentor/create-Assignment'}>Create Assignments</Link>
         </div>
     );
 };

@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import { Header } from '../components/user/Header'
 import { Footer } from '../components/user/Footer'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { UserHeader } from '../components/user/UserHeader'
 import { axiosInstance } from '../config/axiosInstance'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearUser, saveUser } from '../redux/features/userSlice'
 
 export const UserLayout = () => {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
         const { userAutherized } = useSelector((state) => state.user);

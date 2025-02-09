@@ -12,6 +12,8 @@ export const useFetch = (url) => {
                 method: "GET",
                 url: url,
             });
+            console.log("Fetching data from:", url);
+
             setData(response?.data?.data);
             setIsloading(false);
         } catch (error) {
@@ -28,3 +30,4 @@ export const useFetch = (url) => {
 
     return [data, isLoading, error];
 };
+

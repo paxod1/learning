@@ -45,36 +45,79 @@ export const userSignup = async (req, res, next) => {
     }
 };
 
+// export const userLogin = async (req, res, next) => {
+//     try {
+//         const { email, password } = req.body;
+//         if (!email || !password) {
+//             return res.status(400).json({ message: "all fields are required" });
+//         }
+
+//         const userExist = await User.findOne({ email });
+//         if (!userExist) {
+//             return res.status(404).json({ success: false, message: "user does not exist" });
+//         }
+
+//         const passwordMatch = bcrypt.compareSync(password, userExist.password);
+//         if (!passwordMatch) {
+//             return res.status(401).json({ message: "user not autherized" });
+//         }
+
+//         const token = generateToken(userExist._id);
+
+//         res.cookie("token", token , {
+//             sameSite:"None",
+//             secure:true,
+//             httpOnly:true});
+
+//         res.json({ success: true, message: "user login successfull" });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(error.statusCode || 500).json(error.message || 'Internal server error')
+//     }
+// };
+
+
 export const userLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            return res.status(400).json({ message: "all fields are required" });
+            return res.status(400).json({ message: "All fields are required" });
         }
 
         const userExist = await User.findOne({ email });
         if (!userExist) {
-            return res.status(404).json({ success: false, message: "user does not exist" });
+            return res.status(404).json({ success: false, message: "User does not exist" });
         }
 
         const passwordMatch = bcrypt.compareSync(password, userExist.password);
         if (!passwordMatch) {
-            return res.status(401).json({ message: "user not autherized" });
+            return res.status(401).json({ message: "User not authorized" });
         }
 
         const token = generateToken(userExist._id);
 
-        res.cookie("token", token , {
-            sameSite:"None",
-            secure:true,
-            httpOnly:true});
+        res.cookie("token", token, {
+            sameSite: "None",
+            secure: true,
+            httpOnly: true
+        });
 
-        res.json({ success: true, message: "user login successfull" });
+        // ✅ Return user details in response
+        res.json({
+            success: true,
+            message: "User login successful",
+            user: {
+                id: userExist._id,
+                name: userExist.name,
+                email: userExist.email
+            }
+        });
     } catch (error) {
         console.log(error);
-        res.status(error.statusCode || 500).json(error.message || 'Internal server error')
+        res.status(error.statusCode || 500).json(error.message || "Internal server error");
     }
 };
+
 
 export const userProfile = async (req, res, next) => {
     try {
