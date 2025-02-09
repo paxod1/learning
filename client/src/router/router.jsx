@@ -117,6 +117,11 @@ import { AdminContact } from "../pages/admin/AdminContact";
               path: "login",
               element: <LoginPage role="mentor" />,
           },
+          { 
+            path: "/mentor/course-details/:id",
+            element: <CourseDetails />,
+
+        },
           
           { 
             path: "",
@@ -173,6 +178,11 @@ import { AdminContact } from "../pages/admin/AdminContact";
           path: "login",
           element: <LoginPage role="admin" />,
       },
+      { 
+        path: "/admin/course-details/:id",
+        element: <CourseDetails />,
+
+    },
       
       { 
         path: "",

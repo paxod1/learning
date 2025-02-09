@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { DarkMode } from "../shared/DarkMode";
+import {SearchBar} from "../../pages/user/SearchBar";
 
 export const Header = () => {
 
@@ -11,6 +12,7 @@ export const Header = () => {
             <Link to={"/"}>
                 <div className="text-3xl font-bold"> Acumen</div>
             </Link>
+             
             <nav className="flex gap-16 items-center font-semibold">
                 <Link to={"/"}>Home</Link>
                 <Link to={"/about"}>About</Link>
