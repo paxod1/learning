@@ -29,6 +29,7 @@ export const AdminProfile = () => {
                 method: "POST",
                 url: "/admins/log-out",
             });
+            localStorage.removeItem("token");
             dispatch(clearUser());
             setTimeout(() => navigate("/"), 100); 
         } catch (error) {
