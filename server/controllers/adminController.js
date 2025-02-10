@@ -29,34 +29,48 @@ export const createAdmin = async () => {
     }
 };
 
+import bcrypt from "bcrypt";
+import Admin from "../models/Admin.js";  // Ensure correct import
+import generateToken from "../utils/generateToken.js";  // Ensure correct import
+
 export const adminLogin = async (req, res, next) => {
     try {
-        console.log('admin login route');
+        console.log("🔹 Admin login attempt...");
 
         const { email, password } = req.body;
+
+        // ✅ Check for missing fields
         if (!email || !password) {
-            return res.status(400).json({ message: "All fields are required" });
+            return res.status(400).json({ success: false, message: "All fields are required" });
         }
 
+        // ✅ Find the admin user
         const userExist = await Admin.findOne({ email });
         if (!userExist) {
             return res.status(404).json({ success: false, message: "User does not exist" });
         }
 
-        const passwordMatch = bcrypt.compareSync(password, userExist.password);
+        // ✅ Compare password asynchronously
+        const passwordMatch = await bcrypt.compare(password, userExist.password);
         if (!passwordMatch) {
-            return res.status(401).json({ success: false, message: "User not authorized" });
+            return res.status(401).json({ success: false, message: "Incorrect password" });
         }
 
-        console.log('before token gen');
+        console.log("🔹 Before token generation...");
 
+        // ✅ Generate JWT token
         const token = generateToken(userExist._id, "admin");
-        console.log(token, 'after token gen');
+        console.log("✅ Token generated:", token);
 
-        res.cookie("token", token, { httpOnly: true });
+        // ✅ Set secure HTTP-only cookie
+        res.cookie("token", token, { 
+            httpOnly: true, 
+            secure: true, 
+            sameSite: "None" 
+        });
 
-        // ✅ Return user details in response
-        res.json({
+        // ✅ Send response with user details
+        res.status(200).json({
             success: true,
             message: "User login successful",
             user: {
@@ -66,11 +80,16 @@ export const adminLogin = async (req, res, next) => {
             },
             token
         });
+
     } catch (error) {
-        console.log(error);
-        res.status(error.statusCode || 500).json({ success: false, message: error.message || 'Internal server error' });
+        console.error("❌ Error during login:", error);
+        res.status(error.statusCode || 500).json({ 
+            success: false, 
+            message: error.message || "Internal server error" 
+        });
     }
 };
+
 
 
 export const adminProfile = async (req, res, next) => {
