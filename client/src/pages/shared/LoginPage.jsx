@@ -30,6 +30,7 @@ export const LoginPage = ({ role = "user" }) => {
     const onSubmit = async (data) => {
         try {
             const response = await axiosInstance.post(user.login_api, data);
+            console.log("API Response:", response.data);
 
             if (response.data.success) {
                 const userData = response.data.user;
