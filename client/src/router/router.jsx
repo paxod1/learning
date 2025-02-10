@@ -33,6 +33,7 @@ import { CreateAssignment } from "../pages/mentor/CreateAssignment";
 import { ViewAssignment } from "../pages/mentor/ViewAssignment";
 import { UserViewAssignment } from "../pages/user/UserViewAssignment";
 import { SubmitAssignment } from "../pages/user/SubmitAssignment";
+import { EvaluateAssignment } from "../pages/mentor/EvaluateAssignment";
 
 
  export const router = createBrowserRouter([
@@ -190,6 +191,10 @@ import { SubmitAssignment } from "../pages/user/SubmitAssignment";
             element: <ViewAssignment/>,
 
         },
+        { path:"/mentor/evaluate/:assignmentId" ,
+          element :<EvaluateAssignment />}
+
+       
           ],
       },
   ],

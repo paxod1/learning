@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../../config/axiosInstance";
+import toast from "react-hot-toast";
 
 // 🔹 Custom Hook for Fetching Assignments
 const useAssignments = () => {
@@ -12,7 +13,7 @@ const useAssignments = () => {
         const fetchAssignments = async () => {
             try {
                 const response = await axiosInstance.get("/assignment/all");
-                console.log("API Response:", response.data);
+                console.log("Fetched Assignments:", response.data);
 
                 if (Array.isArray(response.data)) {
                     setAssignments(response.data);
@@ -33,13 +34,52 @@ const useAssignments = () => {
     return { assignments, loading, error };
 };
 
+// 🔹 Custom Hook for Fetching Student's Submissions
+const useStudentSubmissions = () => {
+    const [submissions, setSubmissions] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchSubmissions = async () => {
+            try {
+                const response = await axiosInstance.get("/assignment/my-submissions");
+                console.log("Fetched Submissions:", response.data);
+
+                if (Array.isArray(response.data)) {
+                    const submissionMap = {};
+                    response.data.forEach((submission) => {
+                        if (submission.assignmentId && submission.assignmentId._id) {
+                            submissionMap[submission.assignmentId._id] = submission.score ?? "Not Graded";
+                        }
+                    });
+                    setSubmissions(submissionMap);
+                } else {
+                    setSubmissions({});
+                }
+            } catch (error) {
+                console.error("Error fetching submissions:", error.response?.data || error.message);
+                setError(error.response?.data?.message || "Failed to load scores.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchSubmissions();
+    }, []);
+
+    return { submissions, loading, error };
+};
+
 // 🔹 Main Component: View Assignments
 export const UserViewAssignment = () => {
-    const { assignments, loading, error } = useAssignments();
+    const { assignments, loading: assignmentsLoading, error: assignmentsError } = useAssignments();
+    const { submissions, loading: submissionsLoading, error: submissionsError } = useStudentSubmissions();
     const navigate = useNavigate();
 
-    if (loading) return <p>Loading assignments...</p>;
-    if (error) return <p style={{ color: "red" }}>{error}</p>;
+    if (assignmentsLoading || submissionsLoading) return <p>Loading assignments...</p>;
+    if (assignmentsError) return <p style={{ color: "red" }}>{assignmentsError}</p>;
+    if (submissionsError) toast.error(submissionsError);
 
     return (
         <div>
@@ -53,6 +93,11 @@ export const UserViewAssignment = () => {
                             <h3>{assignment.title}</h3>
                             <p>{assignment.description}</p>
                             <p><strong>Due Date:</strong> {new Date(assignment.dueDate).toLocaleDateString()}</p>
+
+                            {/* Display Score */}
+                            <p>
+                                <strong>Score:</strong> {submissions[assignment._id] !== undefined ? submissions[assignment._id] : "Not Submitted"}
+                            </p>
 
                             {/* Submit Assignment Button */}
                             <button

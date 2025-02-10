@@ -1,9 +1,10 @@
+// ViewAssignments Component (Frontend)
 import React, { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../../config/axiosInstance";
 
 // Custom Hook for Fetching Assignments
- const useAssignments = () => {
+const useAssignments = () => {
     const [assignments, setAssignments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -12,9 +13,6 @@ import { axiosInstance } from "../../config/axiosInstance";
         const fetchAssignments = async () => {
             try {
                 const response = await axiosInstance.get("/assignment/all");
-                console.log("API Response:", response.data);
-
-                // Ensure response data is an array to prevent `.map()` errors
                 if (Array.isArray(response.data)) {
                     setAssignments(response.data);
                 } else {
@@ -34,9 +32,9 @@ import { axiosInstance } from "../../config/axiosInstance";
     return { assignments, loading, error };
 };
 
-// Main Component: View Assignments
 export const ViewAssignment = () => {
-    const { assignments, loading, error } = useAssignments(); // Use the custom hook
+    const { assignments, loading, error } = useAssignments();
+    const navigate = useNavigate();
 
     if (loading) return <p>Loading assignments...</p>;
     if (error) return <p style={{ color: "red" }}>{error}</p>;
@@ -59,7 +57,8 @@ export const ViewAssignment = () => {
                                 <ul>
                                     {assignment.submissions.map((submission) => (
                                         <li key={submission._id} style={{ marginBottom: "5px", padding: "5px", border: "1px solid #ddd" }}>
-                                            <p><strong>Student ID:</strong> {submission.studentId}</p>
+                                            <p><strong>Student Name:</strong> {submission.studentId.name}</p>
+                                            <p><strong>Student Email:</strong> {submission.studentId.email}</p>
                                             <p><strong>Content:</strong> {submission.content}</p>
                                             <p><strong>Submitted At:</strong> {new Date(submission.submittedAt).toLocaleString()}</p>
                                             {submission.feedback && <p><strong>Feedback:</strong> {submission.feedback}</p>}
@@ -68,8 +67,15 @@ export const ViewAssignment = () => {
                                     ))}
                                 </ul>
                             ) : (
-                                <p>No submissions yet</p>
+                                <p></p>
                             )}
+
+                            {/* Evaluate Submissions Button */}
+                            <button 
+                                onClick={() => navigate(`/mentor/evaluate/${assignment._id}`)}
+                                style={{ padding: "5px 10px", background: "blue", color: "white", border: "none", cursor: "pointer", marginTop: "10px" }}>
+                                Evaluate Submissions
+                            </button>
                         </li>
                     ))}
                 </ul>
@@ -77,4 +83,3 @@ export const ViewAssignment = () => {
         </div>
     );
 };
-
