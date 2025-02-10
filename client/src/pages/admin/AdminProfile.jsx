@@ -30,7 +30,7 @@ export const AdminProfile = () => {
                 url: "/admins/log-out",
             });
             dispatch(clearUser());
-            navigate('/')
+            setTimeout(() => navigate("/"), 100); 
         } catch (error) {
             console.log(error);
         }
