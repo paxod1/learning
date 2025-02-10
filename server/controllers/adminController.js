@@ -29,9 +29,7 @@ export const createAdmin = async () => {
     }
 };
 
-import bcrypt from "bcrypt";
-import Admin from "../models/Admin.js";  // Ensure correct import
-import generateToken from "../utils/generateToken.js";  // Ensure correct import
+
 
 export const adminLogin = async (req, res, next) => {
     try {
