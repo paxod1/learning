@@ -17,9 +17,10 @@ export const Header = () => {
                 <Link to={"/"}>Home</Link>
                 <Link to={"/about"}>About</Link>
                 <Link to={"/course"}>Course</Link>
+               
             </nav>
 
-            <div className="flex items-center gap-10">
+            <div className="flex items-center px-10 gap-10">
                 <DarkMode/>
                 <button onClick={()=>navigate('/signup')} className="btn btn-primary">Join us</button>
             </div>

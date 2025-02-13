@@ -15,11 +15,13 @@ export const useFetch = (url) => {
             console.log("Fetching data from:", url);
 
             setData(response?.data?.data);
+            console.log(data);
+
             setIsloading(false);
         } catch (error) {
             console.log(error);
             setError(error);
-        }finally{
+        } finally {
             setIsloading(false)
         }
     };

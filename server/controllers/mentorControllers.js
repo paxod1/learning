@@ -44,6 +44,8 @@ export const mentorSignup = async (req, res, next) => {
     }
 };
 
+//
+
 export const mentorLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body;
@@ -103,58 +105,68 @@ export const mentorProfile = async (req, res, next) => {
     }
 };
 
-export const mentorProfileUpdate = async (req, res, next) => {
+export const mentorProfileUpdate = async (req, res) => {
     try {
-        const userId = req.user.id; // Get the user ID from the authenticated user
-        const { name, email, password } = req.body; // Get updated fields from request body
-    
-        const user = await Mentor.findById(userId); // Find user by ID
-    
+        const userId = req.user.id; // Get authenticated user's ID
+        const { name, email, currentPassword, newPassword, profilePic } = req.body;
+
+        const user = await Mentor.findById(userId); // Find mentor by ID
+
         if (!user) {
-          return res.status(404).send('User not found');
+            return res.status(404).json({ message: "User not found" });
         }
-    
-        // Update user fields (conditionally, only if provided)
+
+        // Verify current password if provided
+        if (currentPassword && newPassword) {
+            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            if (!isMatch) {
+                return res.status(400).json({ message: "Current password is incorrect" });
+            }
+            
+            // Hash new password
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(newPassword, salt);
+        }
+
+        // Update user details if provided
         if (name) user.name = name;
         if (email) user.email = email;
-    
-        // If the password is being updated, hash the new password
-        if (password) {
-          const salt = await bcrypt.genSalt(10);
-          user.password = await bcrypt.hash(password, salt);
-        }
-    
-        // Save the updated user data
-        await user.save();
-    
+        if (profilePic) user.profilePic = profilePic; // Store profile picture if sent
+
+        await user.save(); // Save the updated profile
+
         res.status(200).json({
-          message: 'Profile updated successfully',
-          user: {
-            id: user._id,
-            name: user.name,
-            email: user.email,
-          },
+            message: "Profile updated successfully",
+            mentor: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                profilePic: user.profilePic,
+            },
         });
-      } catch (error) {
+    } catch (error) {
         console.error(error);
-        res.status(500).send('Server error');
-      }
-    };
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+//
 
 export const mentorLogout = async (req, res, next) => {
     try {
-
         res.clearCookie('token', {
-            sameSite:"None",
-            secure:true,
-            httpOnly:true
+            sameSite: "None",
+            secure: true,
+            httpOnly: true
         });
-        res.json({ success: true, message: "user logged out" });
+
+        res.json({ success: true, message: "User logged out" });
     } catch (error) {
         console.log(error);
-        res.status(error.statusCode || 500).json(error.message || 'Internal server error')
+        res.status(error.statusCode || 500).json(error.message || 'Internal server error');
     }
 };
+
 
 export const mentorDelete = async (req, res, next) => {
     try {

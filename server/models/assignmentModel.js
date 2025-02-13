@@ -7,6 +7,11 @@ const assignmentSchema = new mongoose.Schema(
         type: String, 
         required: true 
     },
+    mentorId: 
+    {
+        type: String, 
+        required: true 
+    },
     description: String,
     dueDate: Date,
     createdBy: 

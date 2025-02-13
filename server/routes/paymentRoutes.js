@@ -1,7 +1,12 @@
-import e from "express";
-import { authUser } from "../middlewares/authUser.js";
-const router = e.Router();
+import express from "express";
+import dotenv from "dotenv";
 import Stripe from "stripe";
+import { authUser } from "../middlewares/authUser.js";
+
+
+dotenv.config();
+
+const router = express.Router();
 const client_domain = process.env.CLIENT_DOMAIN;
 
 const stripe = new Stripe(process.env.Stripe_Private_Api_Key);
@@ -31,9 +36,11 @@ router.post('/create-checkout-session', authUser, async (req, res, next) => {
         });
         res.json({ success: true, sessionId: session.id });
     } catch (error) {
+        console.error("Error creating checkout session:", error);
         next(error);
     }
 });
+
 
 
 export { router as paymentRouter };

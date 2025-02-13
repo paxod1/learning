@@ -34,6 +34,9 @@ import { ViewAssignment } from "../pages/mentor/ViewAssignment";
 import { UserViewAssignment } from "../pages/user/UserViewAssignment";
 import { SubmitAssignment } from "../pages/user/SubmitAssignment";
 import { EvaluateAssignment } from "../pages/mentor/EvaluateAssignment";
+import { Orders } from "../pages/user/Order";
+import{AdminUsers} from '../pages/admin/AdminUsers'
+import { AdminMentors } from "../pages/admin/AdminMentors";
 
 
  export const router = createBrowserRouter([
@@ -86,6 +89,10 @@ import { EvaluateAssignment } from "../pages/mentor/EvaluateAssignment";
         element: <SubmitAssignment />,
 
     },
+    {
+      path: 'orders',
+      element: <Orders/>
+    },
         
        {
             path:'user',
@@ -103,13 +110,10 @@ import { EvaluateAssignment } from "../pages/mentor/EvaluateAssignment";
                 path: 'wishlist',
                 element: <h2>User Wishlist</h2>
               },
-              {
-                path: 'orders',
-                element: <h2>User Orders</h2>
-              },
+             
               {
                 path:"payment/success",
-                element: <h2>Payment success</h2>
+                element: <Orders/>
               },
               {
                 path:"payment/cancel",
@@ -252,6 +256,14 @@ import { EvaluateAssignment } from "../pages/mentor/EvaluateAssignment";
           element: <AdminCourseDetails />,
 
       },
+      {
+        path:'/admin/AdminUsers',
+        element:<AdminUsers/>
+      },
+      {
+        path:'/admin/AdminMentors',
+        element:<AdminMentors/>
+      }
       ],
   },
 ],

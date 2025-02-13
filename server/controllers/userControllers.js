@@ -6,44 +6,55 @@ import { cloudinaryInstance } from "../config/cloudinaryConfig.js";
 
 export const userSignup = async (req, res, next) => {
     try {
-        let imageUrl;
-        const { name, email, password, mobile, profilePic } = req.body;
-        console.log("body------------",req.body)
+        let imageUrl = "";
+        const { name, email, password, mobile } = req.body;
+        console.log("body------------", req.body);
 
         if (!name || !email || !password) {
-            return res.status(400).json({ success: false, message: "all fields required" });
+            return res.status(400).json({ success: false, message: "All fields are required" });
         }
+
         const isUserExist = await User.findOne({ email });
 
         if (isUserExist) {
-            return res.status(400).json({ message: "user already exist" });
+            return res.status(400).json({ message: "User already exists" });
         }
+
         if (req.file) {
             const cloudinaryRes = await cloudinaryInstance.uploader.upload(req.file.path);
             imageUrl = cloudinaryRes.url;
         }
 
-        console.log('====imageUrl',imageUrl, );
+        console.log("==== imageUrl ====", imageUrl);
 
         const saltRounds = 10;
         const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
-        const newUser = new User({ name, email, password: hashedPassword, mobile, profilePic: imageUrl });
+        const newUser = new User({
+            name,
+            email,
+            password: hashedPassword,
+            mobile,
+            profilePic: imageUrl,
+        });
+
         await newUser.save();
 
         const token = generateToken(newUser._id);
 
-        res.cookie("token", token ,{
-            sameSite:"None",
-            secure:true,
-            httpOnly:true});
+        res.cookie("token", token, {
+            sameSite: "None",
+            secure: true,
+            httpOnly: true,
+        });
 
-        res.json({ success: true, message: "user created successfully" });
+        res.json({ success: true, message: "User created successfully" });
     } catch (error) {
-        console.log(error);
-    res.status(error.statusCode || 500).json(error.message || 'Internal server error')        
+        console.error(error);
+        res.status(error.statusCode || 500).json(error.message || "Internal server error");
     }
 };
+
 
 // export const userLogin = async (req, res, next) => {
 //     try {
@@ -122,11 +133,11 @@ export const userLogin = async (req, res, next) => {
 export const userProfile = async (req, res, next) => {
     try {
 
-        const {user}=req
+        const { user } = req
 
         const userData = await User.findById(user.id).select('-password')
 
-        res.json({ success: true, message: "user profile fetched", data: userData  });
+        res.json({ success: true, message: "user profile fetched", data: userData });
     } catch (error) {
         console.log(error);
         res.status(error.statusCode || 500).json(error.message || 'Internal server error')
@@ -136,48 +147,60 @@ export const userProfile = async (req, res, next) => {
 export const userProfileUpdate = async (req, res, next) => {
     try {
         const userId = req.user.id; // Get the user ID from the authenticated user
-        const { name, email, password } = req.body; // Get updated fields from request body
-    
+        const { name, email, mobile, currentPassword, newPassword } = req.body; // Get updated fields
+
         const user = await User.findById(userId); // Find user by ID
-    
+
         if (!user) {
-          return res.status(404).send('User not found');
+            return res.status(404).send('User not found');
         }
-    
-        // Update user fields (conditionally, only if provided)
+
+        // Update user fields conditionally
         if (name) user.name = name;
         if (email) user.email = email;
-    
-        // If the password is being updated, hash the new password
-        if (password) {
-          const salt = await bcrypt.genSalt(10);
-          user.password = await bcrypt.hash(password, salt);
+        if (mobile) user.mobile = mobile;
+
+        // If the password is being updated, check the current password first
+        if (newPassword) {
+            if (!currentPassword) {
+                return res.status(400).send('Current password is required to update the password');
+            }
+
+            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            if (!isMatch) {
+                return res.status(400).send('Current password is incorrect');
+            }
+
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(newPassword, salt);
         }
-    
+
         // Save the updated user data
         await user.save();
-    
+
         res.status(200).json({
-          message: 'Profile updated successfully',
-          user: {
-            id: user._id,
-            name: user.name,
-            email: user.email,
-          },
+            message: 'Profile updated successfully',
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                mobile: user.mobile,
+            },
         });
-      } catch (error) {
+    } catch (error) {
         console.error(error);
         res.status(500).send('Server error');
-      }
+    }
 };
+
 
 export const userLogout = async (req, res, next) => {
     try {
 
         res.clearCookie('token', {
-            sameSite:"None",
-            secure:true,
-            httpOnly:true
+            sameSite: "None",
+            secure: true,
+            httpOnly: true
         });
 
         res.json({ success: true, message: "user logged out" });
@@ -192,14 +215,14 @@ export const userDelete = async (req, res, next) => {
         const userId = req.user.id;
 
         const deletedUser = await User.findByIdAndDelete(userId);
-        if(!deletedUser){
-            return res.status(404).json({message:"User not found"});
+        if (!deletedUser) {
+            return res.status(404).json({ message: "User not found" });
         }
         res.clearCookie('token', {
-            sameSite:"None",
-            secure:true,
-            httpOnly:true
-        }).status(200).json({message:"user deleted Sucessfully"});
+            sameSite: "None",
+            secure: true,
+            httpOnly: true
+        }).status(200).json({ message: "user deleted Sucessfully" });
     } catch (error) {
         console.log(error);
         res.status(error.statusCode || 500).json(error.message || 'Internal server error')

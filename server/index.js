@@ -4,7 +4,9 @@ import { apiRouter } from "./routes/index.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { createAdmin } from "./controllers/adminController.js";
-
+import dotenv from 'dotenv';
+dotenv.config();
+createAdmin()
 
 const app = express();
 const port = 3000;
@@ -12,12 +14,13 @@ const port = 3000;
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173","https://learning-dashboard-client.vercel.app"],
-    credentials:true,
-    methods:["GET","POST","PUT","DELETE","OPTIONS"]
+    origin: ["http://localhost:5173", "https://learning-dashboard-client.vercel.app"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
   }
   ));
 app.use(cookieParser());
+
 
 connectDB().then(() => {
   console.log("Database connected successfully.");

@@ -6,18 +6,15 @@ import mongoose from "mongoose";
 // ✅ Create Assignment
 export const createAssignment = async (req, res) => {
     try {
-        const { title, description, dueDate } = req.body;
-
-        // Check if an assignment with the same title already exists
-        const existingAssignment = await Assignment.findOne({ title });
-        if (existingAssignment) {
-            return res.status(409).json({ message: "Assignment already exists" });
-        }
+        const { title, description, dueDate,mentorId } = req.body;
+        console.log("from createAssignment",title, description, dueDate,mentorId);
+        
 
         const assignment = new Assignment({
             title,
             description,
             dueDate,
+            mentorId,
             createdBy: req.user.id
         });
 

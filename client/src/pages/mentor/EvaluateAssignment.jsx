@@ -5,6 +5,7 @@ import { axiosInstance } from "../../config/axiosInstance";
 import toast from "react-hot-toast";
 
 // Custom Hook for Fetching Submissions
+// Custom Hook for Fetching Submissions
 const useSubmissions = (assignmentId) => {
     const [submissions, setSubmissions] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -14,9 +15,17 @@ const useSubmissions = (assignmentId) => {
         const fetchSubmissions = async () => {
             try {
                 const response = await axiosInstance.get(`/assignment/submitted/${assignmentId}`);
-                setSubmissions(response.data || []);
+
+                if (response.data && response.data.length > 0) {
+                    setSubmissions(response.data);
+                    setError(null); // Clear error if data is found
+                } else {
+                    setSubmissions([]); // Empty submissions list
+                    setError(null); // No error if no data found
+                }
             } catch (error) {
-                setError("Failed to load submissions.");
+                console.error("Error fetching submissions:", error);
+                setError("🚨 No students have submitted the assignment yet.");
             } finally {
                 setLoading(false);
             }
@@ -79,7 +88,9 @@ export const EvaluateAssignment = () => {
         <div>
             <h2>Evaluate Submissions</h2>
             {submissions.length === 0 ? (
-                <p>No submissions found.</p>
+                <p style={{ color: "gray", fontSize: "18px", textAlign: "center", marginTop: "20px" }}>
+                    🚨 No students have submitted the assignment yet.
+                </p>
             ) : (
                 <ul>
                     {submissions.map((submission) => (
@@ -88,32 +99,45 @@ export const EvaluateAssignment = () => {
                             <p><strong>Student Email:</strong> {submission.studentId.email}</p>
                             <p><strong>Content:</strong> {submission.content}</p>
                             <p><strong>Submitted At:</strong> {new Date(submission.submittedAt).toLocaleString()}</p>
-                            <p><strong>Current Score:</strong> {submission.score || "Not graded yet"}</p>
+                            <p><strong>Current Score:</strong> {submission.score ?? "Not graded yet"}</p>
 
-                            <label>Score:</label>
-                            <input
-                                type="number"
-                                value={scores[submission._id] || ""}
-                                onChange={(e) => handleScoreChange(submission._id, e.target.value)}
-                                style={{ marginLeft: "10px" }}
-                            />
+                            {submission.score === undefined || submission.score === null ? (
+                                <>
+                                    <label>Score:</label>
+                                    <input
+                                        type="number"
+                                        value={scores[submission._id] || ""}
+                                        onChange={(e) => handleScoreChange(submission._id, e.target.value)}
+                                        style={{ marginLeft: "10px" }}
+                                    />
 
-                            <label>Feedback:</label>
-                            <input
-                                type="text"
-                                value={feedbacks[submission._id] || ""}
-                                onChange={(e) => handleFeedbackChange(submission._id, e.target.value)}
-                                style={{ marginLeft: "10px" }}
-                            />
+                                    <label>Feedback:</label>
+                                    <input
+                                        type="text"
+                                        value={feedbacks[submission._id] || ""}
+                                        onChange={(e) => handleFeedbackChange(submission._id, e.target.value)}
+                                        style={{ marginLeft: "10px" }}
+                                    />
 
-                            <button
-                                onClick={() => handleSubmitScore(submission._id, submission.studentId)}
-                                style={{ marginLeft: "10px", padding: "5px 10px", background: "green", color: "white", border: "none", cursor: "pointer" }}>
-                                Submit Score and Feedback
-                            </button>
+                                    <button
+                                        onClick={() => handleSubmitScore(submission._id, submission.studentId)}
+                                        style={{
+                                            marginLeft: "10px",
+                                            padding: "5px 10px",
+                                            background: "green",
+                                            color: "white",
+                                            border: "none",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Submit Score and Feedback
+                                    </button>
+                                </>
+                            ) : null}
                         </li>
                     ))}
                 </ul>
+
             )}
             <button
                 onClick={() => navigate("/mentor/view-Assignment")}
@@ -123,3 +147,4 @@ export const EvaluateAssignment = () => {
         </div>
     );
 };
+

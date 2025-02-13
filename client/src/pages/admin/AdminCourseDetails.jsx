@@ -86,7 +86,6 @@ export const AdminCourseDetails = () => {
         <div className="w-10/12">
           <h2 className="text-3xl">{courseDetails?.title}</h2>
           <p>{courseDetails?.description}</p>
-          <button className="btn btn-success mt-4" onClick={handleAddToCart}>Add to cart</button>
         </div>
       </div>
 

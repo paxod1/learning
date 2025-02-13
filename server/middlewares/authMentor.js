@@ -1,6 +1,7 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
+import { Mentor } from '../models/mentorModel.js';
 
-export const authMentor = (req,res,next)=>{
+export const authMentor = async (req,res,next)=>{
     try {
         const {token} = req.cookies;
         console.log("Token from cookies:", token);
@@ -20,8 +21,15 @@ export const authMentor = (req,res,next)=>{
         }
 
         req.user=tokenVerified
+        const mentor = await Mentor.findById(tokenVerified.id);
+        if (!mentor) {
+            return res.status(404).json({ message: 'Mentor not found' });
+        }
+
+        req.user = mentor; // Attach mentor details to req.user
+        next();
         
-        next()
+        
         
     } catch (error) {
         

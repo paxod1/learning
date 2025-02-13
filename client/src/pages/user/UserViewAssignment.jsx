@@ -8,18 +8,32 @@ const useAssignments = () => {
     const [assignments, setAssignments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [orders, setOrders] = useState([]);
+    const USER = JSON.parse(localStorage.getItem("user")) || {};
+    const userid = USER?.id;
 
     useEffect(() => {
         const fetchAssignments = async () => {
             try {
-                const response = await axiosInstance.get("/assignment/all");
-                console.log("Fetched Assignments:", response.data);
+                // Fetch orders for the user
+                const response1 = await axiosInstance.get(`/order_Get/get-orders?userid=${userid}`);
+                setOrders(response1.data.orders);
 
-                if (Array.isArray(response.data)) {
-                    setAssignments(response.data);
-                } else {
-                    setAssignments([]);
-                }
+                // Fetch all assignments
+                const response2 = await axiosInstance.get("/assignment/all");
+                console.log("Fetched Assignments:", response2.data);
+
+                // Extract course titles from the orders
+                const purchasedCourseTitles = response1.data.orders.flatMap(order =>
+                    order.courses.map(course => course.title)
+                );
+
+                // Filter assignments based on the purchased course titles
+                const filteredAssignments = response2.data.filter(assignment =>
+                    purchasedCourseTitles.includes(assignment.title)
+                );
+
+                setAssignments(filteredAssignments);
             } catch (error) {
                 console.error("Error fetching assignments:", error);
                 setError("Failed to load assignments.");
@@ -29,7 +43,7 @@ const useAssignments = () => {
         };
 
         fetchAssignments();
-    }, []);
+    }, [userid]);
 
     return { assignments, loading, error };
 };
@@ -88,33 +102,39 @@ export const UserViewAssignment = () => {
                 <p>No assignments available</p>
             ) : (
                 <ul>
-                    {assignments.map((assignment) => (
-                        <li key={assignment._id} style={{ border: "1px solid gray", padding: "10px", margin: "10px" }}>
-                            <h3>{assignment.title}</h3>
-                            <p>{assignment.description}</p>
-                            <p><strong>Due Date:</strong> {new Date(assignment.dueDate).toLocaleDateString()}</p>
+                    {assignments.map((assignment) => {
+                        const userScore = submissions[assignment._id]; // Check if user has a score
 
-                            {/* Display Score */}
-                            <p>
-                                <strong>Score:</strong> {submissions[assignment._id] !== undefined ? submissions[assignment._id] : "Not Submitted"}
-                            </p>
+                        return (
+                            <li key={assignment._id} style={{ border: "1px solid gray", padding: "10px", margin: "10px" }}>
+                                <h3>{assignment.title}</h3>
+                                <p>{assignment.description}</p>
+                                <p><strong>Due Date:</strong> {new Date(assignment.dueDate).toLocaleDateString()}</p>
 
-                            {/* Submit Assignment Button */}
-                            <button
-                                onClick={() => navigate(`/submit-assignment/${assignment._id}`)}
-                                style={{
-                                    padding: "5px 10px",
-                                    background: "blue",
-                                    color: "white",
-                                    border: "none",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                Submit Assignment
-                            </button>
-                        </li>
-                    ))}
+                                {/* Display Score */}
+                                <p><strong>Score:</strong> {userScore !== undefined ? userScore : "Not Submitted"}</p>
+
+                                {/* Show Submit Button if Score is Undefined */}
+                                {userScore === undefined && (
+                                    <button
+                                        onClick={() => navigate(`/submit-assignment/${assignment._id}`)}
+                                        style={{
+                                            padding: "5px 10px",
+                                            background: "blue",
+                                            color: "white",
+                                            border: "none",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Submit Assignment
+                                    </button>
+                                )}
+                            </li>
+                        );
+                    })}
                 </ul>
+
+
             )}
         </div>
     );

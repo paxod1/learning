@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { axiosInstance } from "../../config/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
 
-export const SignupPage = ({role='user'}) => {
+export const SignupPage = ({ role = 'user' }) => {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
     const user = {
@@ -18,21 +18,32 @@ export const SignupPage = ({role='user'}) => {
         user.login_api = "/mentor/login";
         user.profile_route = "/mentor/profile";
         user.signup_route = "/mentor/sign-up";
-    }   
+    }
 
     const onSubmit = async (data) => {
         try {
-            const response = await axiosInstance({
-                method: "POST",
-                url: user.signup_route,
-                data: data,
+            const formData = new FormData();
+            formData.append("name", data.name);
+            formData.append("email", data.email);
+            formData.append("password", data.password);
+            formData.append("mobile", data.mobile);
+            if (data.profilePic[0]) {
+                formData.append("profilePic", data.profilePic[0]); // Ensure the first file is appended
+            }
+
+            const response = await axiosInstance.post(user.signup_route, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",  // Required for file uploads
+                },
             });
+
             console.log("response====", response);
             navigate(user.login_api);
         } catch (error) {
             console.log(error);
         }
     };
+
 
     return (
         <div className="hero bg-base-200 min-h-screen">
@@ -73,9 +84,9 @@ export const SignupPage = ({role='user'}) => {
                             />
                             <label className="label">
                                 <Link to={'/login'}>
-                                <a href="#" className="label-text-alt link link-hover">
-                                    Existing User?
-                                </a>
+                                    <a href="#" className="label-text-alt link link-hover">
+                                        Existing User?
+                                    </a>
                                 </Link>
                             </label>
                         </div>
@@ -84,12 +95,12 @@ export const SignupPage = ({role='user'}) => {
                             <label className="label">
                                 <span className="label-text">Mobile Number</span>
                             </label>
-                            <input 
-                                type="tel" 
-                                placeholder="Enter your mobile number" 
-                                {...register("mobile")} 
-                                className="input input-bordered" 
-                                required 
+                            <input
+                                type="tel"
+                                placeholder="Enter your mobile number"
+                                {...register("mobile")}
+                                className="input input-bordered"
+                                required
                             />
                         </div>
 
@@ -97,10 +108,10 @@ export const SignupPage = ({role='user'}) => {
                             <label className="label">
                                 <span className="label-text">Profile Picture</span>
                             </label>
-                            <input 
-                                type="file" 
-                                {...register("profilePic")} 
-                                className="file-input file-input-bordered" 
+                            <input
+                                type="file"
+                                {...register("profilePic")}
+                                className="file-input file-input-bordered"
                                 accept="image/*"
                             />
                         </div>

@@ -20,14 +20,18 @@ const courseSchema = new mongoose.Schema(
       required: true,
     },
     duration: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     image: {
       type: String,
-       default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaLGtEd0MJro4X9wDmT2vrvLT-HjKkyyWVmg&s",
+      default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaLGtEd0MJro4X9wDmT2vrvLT-HjKkyyWVmg&s",
     },
-    mentor: { type: mongoose.Types.ObjectId, ref: "Mentor" },
+    mentor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Mentor",
+      required: true,
+    },
   },
   { timestamps: true }
 );

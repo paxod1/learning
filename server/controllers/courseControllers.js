@@ -4,7 +4,7 @@ import { handleImageUpload } from "../utils/cloudinary.js";
 
 export const findAllCourses = async (req, res, next) => {
     try {
-        const courseList = await Course.find();
+        const courseList = await Course.find().populate("mentor", "_id name");
 
         res.json({ message: "course list fetched", data: courseList });
     } catch (error) {
@@ -26,20 +26,23 @@ export const fetchCourseDetails = async (req, res, next) => {
     }
 };
 
+//
+
+
 export const createCourse = async (req, res, next) => {
     try {
         let imageUrl;
 
-        const { title, description, duration, price, image } = req.body;
+        const { title, description, duration, price } = req.body;
 
         if (!title || !description || !duration || !price) {
-            return res.status(400).json({ success: false, message: "all fields required" });
+            return res.status(400).json({ success: false, message: "All fields are required" });
         }
 
         const isCourseExist = await Course.findOne({ title });
 
         if (isCourseExist) {
-            return res.status(400).json({ message: "Course already exist" });
+            return res.status(400).json({ message: "Course already exists" });
         }
 
         console.log("image====", req.file);
@@ -47,15 +50,21 @@ export const createCourse = async (req, res, next) => {
         if (req.file) {
             const cloudinaryRes = await cloudinaryInstance.uploader.upload(req.file.path);
             imageUrl = cloudinaryRes.url;
-            // imageUrl = await handleImageUpload(req.file.path)
         }
 
         console.log(imageUrl, '====imageUrl');
 
-        const newCourse = new Course({ title, description, duration, price, image: imageUrl });
+        // Ensure the user is a mentor
+        if (!req.user || !req.user._id) {
+            return res.status(403).json({ message: "Unauthorized: Only mentors can create courses" });
+        }
+
+        const mentorId = req.user._id; // Automatically get mentor ID
+
+        const newCourse = new Course({ title, description, duration, price, image: imageUrl, mentor: mentorId });
         await newCourse.save();
 
-        res.json({ message: "course created successfully", data: newCourse });
+        res.json({ message: "Course created successfully", data: newCourse });
     } catch (error) {
         console.log(error);
         res.status(error.statusCode || 500).json(error.message || "Internal server error");

@@ -1,47 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { axiosInstance } from "../../config/axiosInstance";
-import { CourseCard } from "../../components/admin/Cards";
+import React from "react";
 import { useFetch } from "../../hooks/UseFetch";
+import { CourseCard } from "../../components/admin/Cards";
 import { CoursePageSkelton } from "../../components/shared/Skelton";
-
 import { Link } from "react-router-dom";
 
-// export const Course = () => {
-//     const [courses, loadingCourses, errorCourses] = useFetch("/course/all-courses");
-//     const [lectures, loadingLectures, errorLectures] = useFetch("/lectures/getLectures");
-
-//     return loadingCourses || loadingLectures ? (
-//         <CoursePageSkelton />
-//     ) : (
-//         <div>
-//             <div className="grid gap-y-20 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-//                 {courses.map((course) => (
-//                     <CourseCard 
-//                         course={course} 
-//                         key={course._id} 
-//                         lectures={lectures.filter(lecture => lecture.courseId === course._id)} // Matching lectures to courses
-//                     />
-//                 ))}
-//             </div>
-//         </div>
-//     );
-// };
 export const AdminCourse = () => {
-  const [courses, loading, error] = useFetch("/course/all-courses");
+  const [courses, loading] = useFetch("/course/all-courses");
 
-  {
-    return loading ? (
-      <CoursePageSkelton />
-    ) : (
-
-      <div className="grid gap-y-20 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 ">
-        {courses.map((value) => (
-          <CourseCard course={value} key={value._id} />
+  return loading ? (
+    <CoursePageSkelton />
+  ) : (
+    <div className="p-10 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
+        Admin Courses
+      </h1>
+      
+      <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {courses.map((course) => (
+          <CourseCard course={course} key={course._id} />
         ))}
-        <Link className="link link-hover" to={'/admin/create-course'}>Add Course</Link>
+
+        {/* Add Course Button */}
+        <div className="flex justify-center items-center">
+          <Link
+            to="/admin/create-course"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all"
+          >
+            + Add Course
+          </Link>
+        </div>
       </div>
-
-    );
-  }
+    </div>
+  );
 };
-
