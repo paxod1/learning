@@ -13,9 +13,12 @@ const port = 3000;
 
 app.use(express.json());
 app.use(cors({
-  origin: "https://learning-ecru-five.vercel.app", // ✅ Use your frontend URL (No wildcard *)
+  origin: "https://learning-ecru-five.vercel.app", // ✅ Your frontend URL
   credentials: true, // ✅ Allow cookies/auth headers
+  methods: "GET,POST,PUT,DELETE,OPTIONS",
+  allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, Authorization",
 }));
+
 
 app.use(cookieParser());
 
