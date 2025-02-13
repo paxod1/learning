@@ -14,11 +14,13 @@ const port = 3000;
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://learning-ecru-five.vercel.app"],
+    origin: "*", // Change this temporarily to debug
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-  }
-  ));
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization",
+  })
+);
+
 app.use(cookieParser());
 
 
