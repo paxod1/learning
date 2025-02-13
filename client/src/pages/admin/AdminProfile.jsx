@@ -68,7 +68,7 @@ export const AdminProfile = () => {
         try {
             await axiosInstance.post("/admins/log-out");
             dispatch(clearUser());
-            navigate("/");
+            navigate("/admin/login");
         } catch (error) {
             console.log(error);
         }
