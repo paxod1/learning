@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  user: null,
+  user: {},
   userAutherized:false
 }
 
@@ -14,7 +14,7 @@ export const userSlice = createSlice({
       state.userAutherized=true
     },
     clearUser: (state) => {
-      state.user=null;
+      state.user={};
       state.userAutherized=false
     },
 
