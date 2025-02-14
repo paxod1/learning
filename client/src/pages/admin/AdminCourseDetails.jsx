@@ -18,8 +18,7 @@ export const AdminCourseDetails = () => {
         });
         setLectures(response.data.lectures);
       } catch (error) {
-        console.error("Error fetching lectures:", error);
-        toast.error("Failed to load lectures.");
+        console.error(error);
       } finally {
         setLoadingLectures(false);
       }
@@ -48,6 +47,61 @@ export const AdminCourseDetails = () => {
           {courseDetails?.description}
         </p>
 
+        {/* Lesson Dropdowns - Manually Designed */}
+        <div className="mt-6">
+          <h3 className="text-xl font-semibold">Lessons</h3>
+
+          {/* Lesson 1 */}
+          <details className="mt-2 bg-gray-800 p-3 rounded-lg">
+            <summary className="cursor-pointer font-medium">
+              Lesson 1: Introduction
+            </summary>
+            <ul className="mt-2 space-y-1 text-gray-300 pl-4">
+              <li className="text-sm flex items-center">
+                <input type="checkbox" className="mr-2" />
+                Topic 1: Overview
+              </li>
+              <li className="text-sm flex items-center">
+                <input type="checkbox" className="mr-2" />
+                Topic 2: Basics
+              </li>
+            </ul>
+          </details>
+
+          {/* Lesson 2 */}
+          <details className="mt-2 bg-gray-800 p-3 rounded-lg">
+            <summary className="cursor-pointer font-medium">
+              Lesson 2: Advanced Concepts
+            </summary>
+            <ul className="mt-2 space-y-1 text-gray-300 pl-4">
+              <li className="text-sm flex items-center">
+                <input type="checkbox" className="mr-2" />
+                Topic 1: Deep Dive
+              </li>
+              <li className="text-sm flex items-center">
+                <input type="checkbox" className="mr-2" />
+                Topic 2: Practical Examples
+              </li>
+            </ul>
+          </details>
+
+          {/* Lesson 3 */}
+          <details className="mt-2 bg-gray-800 p-3 rounded-lg">
+            <summary className="cursor-pointer font-medium">
+              Lesson 3: Final Steps
+            </summary>
+            <ul className="mt-2 space-y-1 text-gray-300 pl-4">
+              <li className="text-sm flex items-center">
+                <input type="checkbox" className="mr-2" />
+                Topic 1: Summary
+              </li>
+              <li className="text-sm flex items-center">
+                <input type="checkbox" className="mr-2" />
+                Topic 2: Next Steps
+              </li>
+            </ul>
+          </details>
+        </div>
         {/* Lectures Section */}
         <div className="mt-6">
           <h3 className="text-xl font-semibold">Lectures</h3>
