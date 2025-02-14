@@ -96,21 +96,19 @@ export const Cart = () => {
     }
 
     return (
-        <div className="p-4">
-            <div className="grid gap-4">
+        <div className="p-6 flex flex-col items-center">
+            <div className="grid gap-6 w-full max-w-3xl mt-6 w-full max-w-md bg-base-200 shadow-lg rounded-lg p-6 text-center">
                 {cartData?.courses?.map((value) => (
-                    <CartCards
-                        item={value}
-                        key={value._id}
-                        handleRemove={() => handleRemoveItem(value._id)}
-                    />
+                    <CartCards item={value} key={value._id} handleRemove={() => handleRemoveItem(value._id)} />
                 ))}
             </div>
 
-            <div className="w-6/12 bg-base-300 flex flex-col items-center gap-5">
-                <h2>Price summary</h2>
-                <h2>Total Price: {cartData?.totalPrice}</h2>
-                <button onClick={makePayment} className="btn btn-success">Checkout</button>
+            <div className="mt-6 w-full max-w-md bg-base-200 shadow-lg rounded-lg p-6 text-center">
+                <h2 className="text-xl font-semibold mb-4">Price Summary</h2>
+                <h2 className="text-lg font-bold">Total Price: ₹{cartData?.totalPrice}</h2>
+                <button onClick={makePayment} className="mt-4 w-full py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-all duration-300 shadow-md">
+                    Proceed to Checkout
+                </button>
             </div>
         </div>
     );

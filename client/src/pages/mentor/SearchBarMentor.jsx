@@ -45,46 +45,48 @@ export const SearchBarMentor = () => {
   }, []);
 
   return (
-    <div ref={searchContainerRef} style={{ position: "relative", width: "100%", maxWidth: "1000px", margin: 80 }}>
-      <div style={{ position: "sticky", top: 0, zIndex: 10, padding: "10px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ position: "relative", width: "100%", maxWidth: "1000px" }}>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              if (!e.target.value.trim()) {
-                setResults([]);
-              }
-            }}
-            placeholder="Search courses..."
-            style={{
-              padding: "6px 40px",
-              width: "80%",
-              border: "none",
-              borderRadius: "20px",
-              backgroundColor: "white",
-              fontSize: "16px",
-              color: "black",
-            }}
-          />
-          <button
-            onClick={handleSearch}
-            style={{
-              position: "absolute",
-              right: "150px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              backgroundColor: "transparent",
-              border: "none",
-              cursor: "pointer",
-            }}
-          >
-            <FaSearch color="#9ca3af" />
-          </button>
-        </div>
+    <div ref={searchContainerRef} style={{ position: "relative", width: "100%", maxWidth: "600px", margin: "80px auto" }}>
+      {/* Search Field */}
+      <div style={{ position: "relative", display: "flex", alignItems: "center", width: "100%" }}>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            if (!e.target.value.trim()) {
+              setResults([]);
+            }
+          }}
+          placeholder="Search courses..."
+          style={{
+            padding: "10px 40px 10px 15px", // Left padding for text, right space for icon
+            width: "100%",
+            border: "1px solid #ccc",
+            borderRadius: "20px",
+            backgroundColor: "white",
+            fontSize: "16px",
+            color: "black",
+            outline: "none",
+          }}
+        />
+        {/* Search Icon */}
+        <button
+          onClick={handleSearch}
+          style={{
+            position: "absolute",
+            right: "15px", // Adjusted so it stays inside
+            backgroundColor: "transparent",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <FaSearch color="#9ca3af" size={16} />
+        </button>
       </div>
 
+      {/* Search Results */}
       {results.length > 0 && (
         <div
           style={{
@@ -146,5 +148,3 @@ export const SearchBarMentor = () => {
     </div>
   );
 };
-
-

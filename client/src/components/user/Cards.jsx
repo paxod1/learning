@@ -7,7 +7,7 @@ export const CourseCard = ({ course }) => {
                 <img className="transform hover:scale-105 transition-all " src={course?.image} alt="course" />
             </figure>
             <div className="card-body p-6">
-                <h2 className="card-title text-xl font-semibold text-gray-800 hover:text-blue-600 transition-colors">
+                <h2 className="card-title text-xl font-semibold text-gray-500 dark:text-gray-200 hover:text-blue-600 transition-colors">
                     {course?.title}
                 </h2>
 
@@ -16,7 +16,7 @@ export const CourseCard = ({ course }) => {
                     {course?.description}
                 </p>
 
-                <p className="text-lg text-gray-700 mt-2">₹{course?.price}</p>
+                <p className="text-lg text-gray-500 dark:text-gray-200 mt-2">₹{course?.price}</p>
                 <div className="card-actions justify-end mt-4">
                     <Link to={`/course-details/${course?._id}`}>
                         <button className="btn btn-primary px-6 py-2 text-lg font-semibold rounded-lg bg-blue-500 hover:bg-blue-600 transition-all">
@@ -30,20 +30,28 @@ export const CourseCard = ({ course }) => {
 };
 
 
-
 export const CartCards = ({ item, handleRemove }) => {
-
-
     return (
-        <div className="flex w-full h-32 items-center gap-20 bg-base-300 mb-10 rounded-md ">
-            <img src={item?.courseId?.image} alt="cart-item" className="w-24 h-20" />
+        <div className="flex items-center bg-base-200 shadow-lg rounded-lg p-6 gap-6 hover:shadow-xl transition-all w-full">
+            {/* Course Image */}
+            <img src={item?.courseId?.image} alt="cart-item" className="w-28 h-24 rounded-lg object-cover" />
 
-            <div>
-                <h2>{item?.courseId?.title} </h2>
-                <h3>{item?.courseId?.price} </h3>
+            {/* Course Details */}
+            <div className="flex flex-col flex-grow">
+                <h2 className="text-lg font-semibold text-gray-500 dark:text-gray-200">{item?.courseId?.title}</h2>
+                <h3 className="text-whit dark:text-gray-400 font-medium">₹{item?.courseId?.price}</h3>
             </div>
 
-            <button className="btn btn-secondary" onClick={() => handleRemove(item?._id)}>Remove</button>
+            {/* Remove Button */}
+            <button 
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-all duration-300 shadow-md"
+                onClick={() => handleRemove(item?._id)}
+            >
+                Remove
+            </button>
         </div>
     );
 };
+
+
+

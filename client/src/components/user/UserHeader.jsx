@@ -3,6 +3,7 @@ import { CircleUser } from "lucide-react";
 import { ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import { DarkMode } from "../shared/DarkMode";
+import { SearchBar } from "../../pages/user/SearchBar";
 
 export const UserHeader = () => {
     return (
@@ -10,6 +11,7 @@ export const UserHeader = () => {
             <Link to={"/"}>
                 <div className="text-3xl font-bold">User</div>
             </Link>
+            <div className="px-10 w-full"> <SearchBar /></div>
             <nav className="flex gap-16 items-center font-semibold">
                 <Link to={"/"}>Home</Link>
                 <Link to={"/about"}>About</Link>

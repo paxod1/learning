@@ -21,7 +21,6 @@ export const CourseCard = ({ course }) => {
 
 export const CartCards = ({ item, handleRemove }) => {
 
-
     return (
         <div className="flex w-full h-32 items-center gap-20 bg-base-300 mb-10 rounded-md ">
             <img src={item?.courseId?.image} alt="cart-item" className="w-24 h-20" />
