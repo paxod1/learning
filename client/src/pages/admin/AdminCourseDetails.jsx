@@ -71,74 +71,70 @@ export const AdminCourseDetails = () => {
                 )}
               </li>
             ))}
+            {/* Lesson Dropdowns */}
+            <div className="mt-6">
+              <h3 className="text-xl font-semibold">Lessons</h3>
+
+              {/* Lesson 1 */}
+              <details className="mt-2 bg-gray-800 p-3 rounded-lg">
+                <summary className="cursor-pointer font-medium">
+                  Lesson 1: Introduction
+                </summary>
+                <ul className="mt-2 space-y-1 text-gray-300 pl-4">
+                  <li className="text-sm flex items-center">
+                    <input type="checkbox" className="mr-2" />
+                    Topic 1: Overview
+                  </li>
+                  <li className="text-sm flex items-center">
+                    <input type="checkbox" className="mr-2" />
+                    Topic 2: Basics
+                  </li>
+                </ul>
+              </details>
+
+              {/* Lesson 2 */}
+              <details className="mt-2 bg-gray-800 p-3 rounded-lg">
+                <summary className="cursor-pointer font-medium">
+                  Lesson 2: Advanced Concepts
+                </summary>
+                <ul className="mt-2 space-y-1 text-gray-300 pl-4">
+                  <li className="text-sm flex items-center">
+                    <input type="checkbox" className="mr-2" />
+                    Topic 1: Deep Dive
+                  </li>
+                  <li className="text-sm flex items-center">
+                    <input type="checkbox" className="mr-2" />
+                    Topic 2: Practical Examples
+                  </li>
+                </ul>
+              </details>
+
+              {/* Lesson 3 */}
+              <details className="mt-2 bg-gray-800 p-3 rounded-lg">
+                <summary className="cursor-pointer font-medium">
+                  Lesson 3: Final Steps
+                </summary>
+                <ul className="mt-2 space-y-1 text-gray-300 pl-4">
+                  <li className="text-sm flex items-center">
+                    <input type="checkbox" className="mr-2" />
+                    Topic 1: Summary
+                  </li>
+                  <li className="text-sm flex items-center">
+                    <input type="checkbox" className="mr-2" />
+                    Topic 2: Next Steps
+                  </li>
+                </ul>
+              </details>
+            </div>
           </ul>
         ) : (
           <p className="text-gray-400">No lectures available for this course.</p>
         )}
       </div>
 
-      {/* Add to Cart Button */}
-      <div className="mt-6 flex justify-center">
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">
-          Add to Cart
-        </button>
-      </div>
 
-      {/* Lesson Dropdowns */}
-      <div className="mt-6">
-        <h3 className="text-xl font-semibold">Lessons</h3>
 
-        {/* Lesson 1 */}
-        <details className="mt-2 bg-gray-800 p-3 rounded-lg">
-          <summary className="cursor-pointer font-medium">
-            Lesson 1: Introduction
-          </summary>
-          <ul className="mt-2 space-y-1 text-gray-300 pl-4">
-            <li className="text-sm flex items-center">
-              <input type="checkbox" className="mr-2" />
-              Topic 1: Overview
-            </li>
-            <li className="text-sm flex items-center">
-              <input type="checkbox" className="mr-2" />
-              Topic 2: Basics
-            </li>
-          </ul>
-        </details>
 
-        {/* Lesson 2 */}
-        <details className="mt-2 bg-gray-800 p-3 rounded-lg">
-          <summary className="cursor-pointer font-medium">
-            Lesson 2: Advanced Concepts
-          </summary>
-          <ul className="mt-2 space-y-1 text-gray-300 pl-4">
-            <li className="text-sm flex items-center">
-              <input type="checkbox" className="mr-2" />
-              Topic 1: Deep Dive
-            </li>
-            <li className="text-sm flex items-center">
-              <input type="checkbox" className="mr-2" />
-              Topic 2: Practical Examples
-            </li>
-          </ul>
-        </details>
-
-        {/* Lesson 3 */}
-        <details className="mt-2 bg-gray-800 p-3 rounded-lg">
-          <summary className="cursor-pointer font-medium">
-            Lesson 3: Final Steps
-          </summary>
-          <ul className="mt-2 space-y-1 text-gray-300 pl-4">
-            <li className="text-sm flex items-center">
-              <input type="checkbox" className="mr-2" />
-              Topic 1: Summary
-            </li>
-            <li className="text-sm flex items-center">
-              <input type="checkbox" className="mr-2" />
-              Topic 2: Next Steps
-            </li>
-          </ul>
-        </details>
-      </div>
     </div>
   );
 };
