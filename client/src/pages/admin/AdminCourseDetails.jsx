@@ -4,43 +4,6 @@ import { useFetch } from "../../hooks/UseFetch";
 import { axiosInstance } from "../../config/axiosInstance";
 import toast from "react-hot-toast";
 
-// export const MentorCourseDetails = () => {
-  
-
-//     const { id } = useParams();
-//     const [courseDetails,isLoading]=useFetch(`/course/courseDetails/${id}`)
-
-//     const handleAddToCart = async()=>{
-//       try {
-//         const response = await axiosInstance({
-//           method:"POST",
-//           url:"/cart/add-to-cart",
-//           data: {courseId:id}
-//         })
-//         toast.success('product added to cart')
-//       } catch (error) {
-//         console.log(error); 
-//         toast.error(error?.response?.data?.message ||  'error adding product to cart') 
-//       }
-//     }
-
-
-//     return (
-//         <div className="flex ">
-//             <div className="w-4/12">
-//               <img src={courseDetails?.image} alt="course-image" />
-//             </div>
-//             <div className="w-10/12">
-//               <h2 className="text-3xl">{courseDetails?.title}</h2>
-//               <p>{courseDetails?.description}</p>
-//               <button className="btn btn-success" onClick={handleAddToCart}>Add to cart</button>
-//             </div>
-//         </div>
-//     );
-// };
-
-
-
 export const AdminCourseDetails = () => {
   const { id } = useParams();
 
@@ -66,51 +29,43 @@ export const AdminCourseDetails = () => {
     fetchLectures();
   }, [id]);
 
-  const handleAddToCart = async () => {
-    try {
-      await axiosInstance.post("/cart/add-to-cart", { courseId: id });
-      toast.success("Product added to cart");
-    } catch (error) {
-      console.error(error);
-      toast.error(error?.response?.data?.message || "Error adding product to cart");
-    }
-  };
-
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="flex flex-col w-full min-h-screen bg-gray-900 text-white p-6">
       {/* Course Details */}
-      <div className="flex">
-        <div className="w-4/12">
-          <img src={courseDetails?.image} alt="course-image" className="w-full" />
+      <div className="flex flex-col md:flex-row w-full gap-6">
+        <div className="w-full md:w-1/2">
+          <img src={courseDetails?.image} alt="Course Thumbnail" className="w-full rounded-lg" />
         </div>
-        <div className="w-10/12">
-          <h2 className="text-3xl">{courseDetails?.title}</h2>
-          <p>{courseDetails?.description}</p>
+        <div className="w-full md:w-1/2 flex flex-col">
+          <h2 className="text-3xl font-bold">{courseDetails?.title}</h2>
+          <p className="mt-2 text-gray-300">{courseDetails?.description}</p>
         </div>
       </div>
 
       {/* Lectures Section */}
-      <div>
+      <div className="mt-6">
         <h3 className="text-2xl font-semibold">Lectures</h3>
         {loadingLectures ? (
-          <p>Loading lectures...</p>
+          <p className="text-gray-400">Loading lectures...</p>
         ) : lectures.length > 0 ? (
-          <ul className="list-disc pl-5">
+          <ul className="mt-4 space-y-4">
             {lectures.map((lecture) => (
-              <li key={lecture._id} className="mt-2">
-                <strong>{lecture.title}</strong> - {lecture.description} 
-                <br />
-      {lecture.videoUrl && (
-        <video width="400" controls>
-          <source src={lecture.videoUrl} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      )}
+              <li key={lecture._id} className="bg-gray-800 p-4 rounded-lg">
+                <h4 className="font-semibold text-lg">{lecture.title}</h4>
+                <p className="text-gray-300 text-sm mt-1">{lecture.description}</p>
+                {lecture.videoUrl && (
+                  <div className="mt-2">
+                    <video controls className="w-full rounded-lg">
+                      <source src={lecture.videoUrl} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
         ) : (
-          <p>No lectures available for this course.</p>
+          <p className="text-gray-400">No lectures available for this course.</p>
         )}
       </div>
     </div>
