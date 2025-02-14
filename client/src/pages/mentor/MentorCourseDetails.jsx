@@ -77,43 +77,124 @@ export const MentorCourseDetails = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-6">
-      {/* Course Details */}
-      <div className="flex">
-        <div className="w-4/12">
-          <img src={courseDetails?.image} alt="course-image" className="w-full" />
-        </div>
-        <div className="w-10/12">
-          <h2 className="text-3xl">{courseDetails?.title}</h2>
-          <p>{courseDetails?.description}</p>
-          <button className="btn btn-success mt-4" onClick={handleAddToCart}>Add to cart</button>
-        </div>
+    <div className="flex flex-col md:flex-row w-full min-h-screen bg-gray-900 text-white p-6">
+    {/* Left Side - Thumbnail inside Video Frame */}
+    <div className="w-full md:w-1/2 p-4">
+      <div className="w-full aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
+        <img
+          src={courseDetails?.image}
+          alt="Course Thumbnail"
+          className="w-full h-full object-cover"
+        />
       </div>
+    </div>
 
-      {/* Lectures Section */}
-      <div>
-        <h3 className="text-2xl font-semibold">Lectures</h3>
-        {loadingLectures ? (
-          <p>Loading lectures...</p>
-        ) : lectures.length > 0 ? (
-          <ul className="list-disc pl-5">
-            {lectures.map((lecture) => (
-              <li key={lecture._id} className="mt-2">
-                <strong>{lecture.title}</strong> - {lecture.description} 
-                <br />
-      {lecture.videoUrl && (
-        <video width="400" controls>
-          <source src={lecture.videoUrl} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      )}
-              </li>
-            ))}
+    {/* Right Side - Course Details */}
+    <div className="w-full md:w-1/2 p-4">
+      <h2 className="text-3xl font-bold">{courseDetails?.title}</h2>
+      <p className="mt-2 text-gray-300 break-words mr-4">
+        {courseDetails?.description}
+      </p>
+
+
+      <button
+        className="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all"
+        onClick={handleAddToCart}
+      >
+        Add to Cart
+      </button>
+
+      {/* Lesson Dropdowns - Manually Designed */}
+      <div className="mt-6">
+        <h3 className="text-xl font-semibold">Lessons</h3>
+
+        {/* Lesson 1 */}
+        <details className="mt-2 bg-gray-800 p-3 rounded-lg">
+          <summary className="cursor-pointer font-medium">
+            Lesson 1: Introduction
+          </summary>
+          <ul className="mt-2 space-y-1 text-gray-300 pl-4">
+            <li className="text-sm flex items-center">
+              <input type="checkbox" className="mr-2" />
+              Topic 1: Overview
+            </li>
+            <li className="text-sm flex items-center">
+              <input type="checkbox" className="mr-2" />
+              Topic 2: Basics
+            </li>
           </ul>
+        </details>
+
+        {/* Lesson 2 */}
+        <details className="mt-2 bg-gray-800 p-3 rounded-lg">
+          <summary className="cursor-pointer font-medium">
+            Lesson 2: Advanced Concepts
+          </summary>
+          <ul className="mt-2 space-y-1 text-gray-300 pl-4">
+            <li className="text-sm flex items-center">
+              <input type="checkbox" className="mr-2" />
+              Topic 1: Deep Dive
+            </li>
+            <li className="text-sm flex items-center">
+              <input type="checkbox" className="mr-2" />
+              Topic 2: Practical Examples
+            </li>
+          </ul>
+        </details>
+
+        {/* Lesson 3 */}
+        <details className="mt-2 bg-gray-800 p-3 rounded-lg">
+          <summary className="cursor-pointer font-medium">
+            Lesson 3: Final Steps
+          </summary>
+          <ul className="mt-2 space-y-1 text-gray-300 pl-4">
+            <li className="text-sm flex items-center">
+              <input type="checkbox" className="mr-2" />
+              Topic 1: Summary
+            </li>
+            <li className="text-sm flex items-center">
+              <input type="checkbox" className="mr-2" />
+              Topic 2: Next Steps
+            </li>
+          </ul>
+        </details>
+      </div>
+        {/* Lectures Section */}
+        <div className="mt-6">
+        <h3 className="text-xl font-semibold">Lectures</h3>
+        {loadingLectures ? (
+          <p className="text-gray-400 mt-2">Loading lectures...</p>
+        ) : lectures.length === 0 ? (
+          <p className="text-gray-400 mt-2">No lectures available.</p>
         ) : (
-          <p>No lectures available for this course.</p>
+          lectures.map((lecture, index) => (
+            <details
+              key={lecture._id}
+              className="mt-2 bg-gray-800 p-3 rounded-lg"
+            >
+              <summary className="cursor-pointer font-medium">
+                {index + 1}. {lecture.title}
+              </summary>
+              <ul className="mt-2 space-y-1 text-gray-300 pl-4">
+                <li className="text-sm">{lecture.description}</li>
+                {lecture.videoUrl && (
+                  <li className="mt-2">
+                    <a
+                      href={lecture.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-400 hover:underline"
+                    >
+                      Watch Video
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </details>
+          ))
         )}
       </div>
     </div>
+  </div>
   );
 };

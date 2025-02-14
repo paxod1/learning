@@ -101,6 +101,41 @@ export const CourseDetails = () => {
             </ul>
           </details>
         </div>
+          {/* Lectures Section */}
+          <div className="mt-6">
+          <h3 className="text-xl font-semibold">Lectures</h3>
+          {loadingLectures ? (
+            <p className="text-gray-400 mt-2">Loading lectures...</p>
+          ) : lectures.length === 0 ? (
+            <p className="text-gray-400 mt-2">No lectures available.</p>
+          ) : (
+            lectures.map((lecture, index) => (
+              <details
+                key={lecture._id}
+                className="mt-2 bg-gray-800 p-3 rounded-lg"
+              >
+                <summary className="cursor-pointer font-medium">
+                  {index + 1}. {lecture.title}
+                </summary>
+                <ul className="mt-2 space-y-1 text-gray-300 pl-4">
+                  <li className="text-sm">{lecture.description}</li>
+                  {lecture.videoUrl && (
+                    <li className="mt-2">
+                      <a
+                        href={lecture.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 hover:underline"
+                      >
+                        Watch Video
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </details>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
