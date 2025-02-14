@@ -81,6 +81,8 @@ export const Profile = () => {
         try {
             await axiosInstance.post("/user/log-out");
             dispatch(clearUser());
+            localStorage.removeItem("user");
+            sessionStorage.removeItem("user");
             navigate("/");
         } catch (error) {
             console.log(error);
