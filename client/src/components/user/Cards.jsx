@@ -11,8 +11,8 @@ export const CourseCard = ({ course }) => {
                     {course?.title}
                 </h2>
 
-                {/* Constrain description */}
-                <p className="text-sm text-gray-600 max-h-16 overflow-hidden text-ellipsis line-clamp-3">
+                {/* Ensure text breaks into the next line instead of truncating */}
+                <p className="text-sm text-gray-600 max-h-24 overflow-auto break-words">
                     {course?.description}
                 </p>
 
@@ -28,6 +28,7 @@ export const CourseCard = ({ course }) => {
         </div>
     );
 };
+
 
 
 export const CartCards = ({ item, handleRemove }) => {
