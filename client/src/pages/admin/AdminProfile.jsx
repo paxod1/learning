@@ -68,8 +68,9 @@ export const AdminProfile = () => {
         try {
             await axiosInstance.post("/admins/log-out");
             dispatch(clearUser());
-            navigate("/");
+
             setTimeout(() => {
+                navigate("/");
                 window.location.reload();
             }, 2000);
 
