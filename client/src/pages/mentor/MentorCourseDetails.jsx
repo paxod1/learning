@@ -97,13 +97,6 @@ export const MentorCourseDetails = () => {
       </p>
 
 
-      <button
-        className="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all"
-        onClick={handleAddToCart}
-      >
-        Add to Cart
-      </button>
-
       {/* Lesson Dropdowns - Manually Designed */}
       <div className="mt-6">
         <h3 className="text-xl font-semibold">Lessons</h3>
