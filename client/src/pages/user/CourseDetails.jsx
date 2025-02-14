@@ -35,7 +35,7 @@ export const CourseDetails = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-full min-h-screen bg-gray-400 text-white p-6">
+    <div className="flex flex-col md:flex-row w-full min-h-screen bg-gray-900 text-white p-6">
       {/* Left Side - Thumbnail inside Video Frame */}
       <div className="w-full md:w-1/2 p-4">
         <div className="w-full aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
