@@ -66,12 +66,11 @@ export const AdminProfile = () => {
     // Handle Logout
     const handleLogout = async () => {
         try {
-            await dispatch(clearUser());
             await axiosInstance.post("/admins/log-out");
-            localStorage.removeItem("user");
-            sessionStorage.removeItem("user");
-            navigate("/admin/login");
+            dispatch(clearUser());
             window.location.reload();
+            navigate("/");
+
         } catch (error) {
             console.log(error);
         }
