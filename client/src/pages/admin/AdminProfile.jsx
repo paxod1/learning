@@ -69,6 +69,8 @@ export const AdminProfile = () => {
             await axiosInstance.post("/admins/log-out");
             dispatch(clearUser());
             navigate("/signup");
+            localStorage.removeItem("user");
+            sessionStorage.removeItem("user");
         } catch (error) {
             console.log(error);
         }
