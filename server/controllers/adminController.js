@@ -111,14 +111,14 @@ export const adminProfile = async (req, res, next) => {
 
 export const adminLogout = async (req, res, next) => {
     try {
-
-        res.clearCookie('token')
-        res.json({ success: true, message: "user logged out" });
+        res.clearCookie('token', { httpOnly: true, secure: true, sameSite: 'None' });
+        res.status(200).json({ success: true, message: "User logged out" });
     } catch (error) {
         console.log(error);
-        res.status(error.statusCode || 500).json(error.message || 'Internal server error')
+        res.status(error.statusCode || 500).json({ message: error.message || "Internal server error" });
     }
 };
+
 
 export const checkAdmin = async (req, res, next) => {
     try {

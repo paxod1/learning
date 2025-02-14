@@ -66,18 +66,14 @@ export const AdminProfile = () => {
     // Handle Logout
     const handleLogout = async () => {
         try {
-            await axiosInstance.post("/admins/log-out");
+            await axiosInstance.post("/admins/log-out", {}, { withCredentials: true });
             dispatch(clearUser());
-
-            setTimeout(() => {
-                navigate("/");
-                window.location.reload();
-            }, 2000);
-
+            navigate("/");
         } catch (error) {
             console.log(error);
         }
     };
+    
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
