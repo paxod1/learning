@@ -25,18 +25,9 @@ export const CourseDetails = () => {
                 {/* Video Player */}
                 <div className="w-full aspect-video bg-black rounded-lg overflow-hidden">
                     <video
-                        src={courseDetails?.videoUrl}
+                        src={courseDetails?.image}
                         controls
                         className="w-full h-full"
-                    />
-                </div>
-
-                {/* Thumbnail */}
-                <div className="mt-4">
-                    <img
-                        src={courseDetails?.image}
-                        alt="course-thumbnail"
-                        className="w-full h-40 object-cover rounded-lg"
                     />
                 </div>
             </div>
