@@ -15,7 +15,7 @@ export const LoginPage = ({ role = "user" }) => {
         profile_route: "/user/profile",
         signup_route: "/signup",
     };
-
+    
     if (role === "mentor") {
         user.role = "mentor";
         user.login_api = "/mentor/log-in";
