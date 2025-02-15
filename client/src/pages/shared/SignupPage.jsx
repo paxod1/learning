@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 export const SignupPage = ({ role = 'user' }) => {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
     const user = {
         role: "user",
         login_api: "/login",
@@ -22,7 +21,6 @@ export const SignupPage = ({ role = 'user' }) => {
     }
 
     const onSubmit = async (data) => {
-        setIsLoading(true);
         try {
             const formData = new FormData();
             formData.append("name", data.name);
@@ -30,12 +28,12 @@ export const SignupPage = ({ role = 'user' }) => {
             formData.append("password", data.password);
             formData.append("mobile", data.mobile);
             if (data.profilePic[0]) {
-                formData.append("profilePic", data.profilePic[0]);
+                formData.append("profilePic", data.profilePic[0]); // Ensure the first file is appended
             }
 
             const response = await axiosInstance.post(user.signup_route, formData, {
                 headers: {
-                    "Content-Type": "multipart/form-data",
+                    "Content-Type": "multipart/form-data",  // Required for file uploads
                 },
             });
 
@@ -43,10 +41,9 @@ export const SignupPage = ({ role = 'user' }) => {
             navigate(user.login_api);
         } catch (error) {
             console.log(error);
-        } finally {
-            setIsLoading(false);
         }
     };
+
 
     return (
         <div className="hero bg-base-200 min-h-screen">
@@ -122,9 +119,7 @@ export const SignupPage = ({ role = 'user' }) => {
 
 
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary" disabled={isLoading}>
-                                {isLoading ? <span className="loading loading-spinner"></span> : "Sign Up"}
-                            </button>
+                            <button className="btn btn-primary">Sign Up</button>
                         </div>
                     </form>
                 </div>
