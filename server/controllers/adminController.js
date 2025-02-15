@@ -13,10 +13,8 @@ export const createAdmin = async () => {
         const existingAdmin = await Admin.findOne({ email: 'admin@example.com' });
         if (existingAdmin) {
             console.log('Admin already exists');
-
             return;
         }
-
         const hashedPassword = await bcrypt.hash('Admin@123', 10);
         const admin = new Admin({
             name: 'SuperAdmin',
@@ -118,7 +116,6 @@ export const adminLogout = async (req, res, next) => {
         res.status(error.statusCode || 500).json({ message: error.message || "Internal server error" });
     }
 };
-
 
 export const checkAdmin = async (req, res, next) => {
     try {
