@@ -46,8 +46,11 @@ export const Cart = () => {
             });
 
             // Update cart data state with the updated cart
-            setCartData(response.data.data);
-            toast.success("Item removed from cart!");
+            setCartData(prevCart => ({
+                ...prevCart,
+                courses: prevCart.courses.filter(course => course._id !== courseId)
+            }));
+
         } catch (error) {
             console.error("Error removing course:", error);
             toast.error(error?.response?.data?.message || "Error while removing product");
