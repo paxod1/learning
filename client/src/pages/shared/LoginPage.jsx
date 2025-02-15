@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -7,7 +7,7 @@ import { axiosInstance } from "../../config/axiosInstance";
 export const LoginPage = ({ role = "user" }) => {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false); // ✅ State for loading
+    const [isLoading, setIsLoading] = useState(false);
 
     const user = {
         role: "user",
@@ -21,7 +21,7 @@ export const LoginPage = ({ role = "user" }) => {
         user.login_api = "/mentor/log-in";
         user.profile_route = "/mentor/profile";
         user.signup_route = "/mentor/signup";
-    } 
+    }
     if (role === "admin") {
         user.role = "admin";
         user.login_api = "/admins/log-in";
@@ -29,17 +29,19 @@ export const LoginPage = ({ role = "user" }) => {
     }
 
     const onSubmit = async (data) => {
-        setIsLoading(true); // ✅ Start loading
+        setIsLoading(true);
         try {
             const response = await axiosInstance.post(user.login_api, data);
             console.log("API Response:", response.data);
 
             if (response.data.success) {
                 const userData = response.data.user;
-                localStorage.setItem("user", JSON.stringify({ 
-                    id: userData.id, 
-                    role: user.role, 
-                    email: userData.email 
+
+                // ✅ Store user details in localStorage
+                localStorage.setItem("user", JSON.stringify({
+                    id: userData.id,
+                    role: user.role,
+                    email: userData.email
                 }));
 
                 toast.success("Login successful!");
@@ -51,7 +53,7 @@ export const LoginPage = ({ role = "user" }) => {
             toast.error(error.response?.data?.message);
             console.error("Login error:", error);
         } finally {
-            setIsLoading(false); // ✅ Stop loading
+            setIsLoading(false);
         }
     };
 
