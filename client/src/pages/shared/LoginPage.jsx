@@ -15,7 +15,7 @@ export const LoginPage = ({ role = "user" }) => {
         profile_route: "/user/profile",
         signup_route: "/signup",
     };
-    
+
     if (role === "mentor") {
         user.role = "mentor";
         user.login_api = "/mentor/log-in";
@@ -28,6 +28,7 @@ export const LoginPage = ({ role = "user" }) => {
         user.profile_route = "/admin/profile";
     }
 
+    
     const onSubmit = async (data) => {
         setIsLoading(true);
         try {

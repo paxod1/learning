@@ -15,4 +15,5 @@ export const handleImageUpload = async (path, isVideo = false) => {
     } catch (error) {
         next(error);
     }
+    
 };
