@@ -37,7 +37,7 @@ export const Cart = () => {
         };
 
         fetchCartData();
-    }, []);
+    }, [cartData]);
 
     const handleRemoveItem = async (courseId) => {
         try {
@@ -45,17 +45,24 @@ export const Cart = () => {
                 data: { userId: userid, courseId },
             });
 
-            // Update cart data state with the updated cart
-            setCartData(prevCart => ({
-                ...prevCart,
-                courses: prevCart.courses.filter(course => course._id !== courseId)
-            }));
+            setCartData(prevCart => {
+                const updatedCourses = prevCart.courses.filter(course => course._id !== courseId);
+                const updatedTotalPrice = updatedCourses.reduce((sum, course) => sum + course.price, 0); // Recalculate total price
 
+                return {
+                    ...prevCart,
+                    courses: updatedCourses,
+                    totalPrice: updatedTotalPrice, // Update total price
+                };
+            });
+
+            toast.success("Product removed from cart");
         } catch (error) {
             console.error("Error removing course:", error);
             toast.error(error?.response?.data?.message || "Error while removing product");
         }
     };
+
 
     const makePayment = async () => {
         try {
@@ -66,6 +73,8 @@ export const Cart = () => {
                 method: "POST",
                 data: { products: cartData?.courses },
             });
+            console.log('HELOO');
+
 
             await axiosInstance.post("/order/create-order", {
                 courses: cartData?.courses.map(course => ({
