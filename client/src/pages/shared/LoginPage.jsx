@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -7,6 +7,7 @@ import { axiosInstance } from "../../config/axiosInstance";
 export const LoginPage = ({ role = "user" }) => {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false); // ✅ State for loading
 
     const user = {
         role: "user",
@@ -28,14 +29,13 @@ export const LoginPage = ({ role = "user" }) => {
     }
 
     const onSubmit = async (data) => {
+        setIsLoading(true); // ✅ Start loading
         try {
             const response = await axiosInstance.post(user.login_api, data);
             console.log("API Response:", response.data);
 
             if (response.data.success) {
                 const userData = response.data.user;
-
-                // ✅ Store user details in localStorage
                 localStorage.setItem("user", JSON.stringify({ 
                     id: userData.id, 
                     role: user.role, 
@@ -50,6 +50,8 @@ export const LoginPage = ({ role = "user" }) => {
         } catch (error) {
             toast.error(error.response?.data?.message);
             console.error("Login error:", error);
+        } finally {
+            setIsLoading(false); // ✅ Stop loading
         }
     };
 
@@ -87,7 +89,13 @@ export const LoginPage = ({ role = "user" }) => {
                             </label>
                         </div>
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary">Login</button>
+                            <button className="btn btn-primary" disabled={isLoading}>
+                                {isLoading ? (
+                                    <span className="loading loading-spinner"></span>
+                                ) : (
+                                    "Login"
+                                )}
+                            </button>
                         </div>
                     </form>
                 </div>
