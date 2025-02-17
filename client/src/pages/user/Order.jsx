@@ -51,7 +51,7 @@ export const Orders = () => {
                       <div className="flex flex-col flex-grow">
                         <p className="text-gray-500 dark:text-gray-200 font-medium">{course.title || "No Title"}</p>
                         <p className="text-gray-500 dark:text-gray-200">₹{course.price}</p>
-                        <Link to={`/course-details/${course?.courseId}`}>
+                        <Link to={`/course-details/${course?._id}`}>
                           <button className="btn btn-primary px-6 py-2 text-lg font-semibold rounded-lg bg-blue-500 hover:bg-blue-600 transition-all">
                             More Details
                           </button>
