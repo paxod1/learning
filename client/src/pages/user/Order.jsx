@@ -13,7 +13,7 @@ export const Orders = () => {
       try {
         const response = await axiosInstance.get(`/order_Get/get-orders?userid=${userid}`);
         setOrders(response.data.orders);
-        console.log(orders);
+        console.log(response.data.orders);
       } catch (error) {
         console.error("Error fetching orders:", error?.response?.data?.message || error);
       } finally {
