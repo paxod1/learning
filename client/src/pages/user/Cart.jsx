@@ -47,12 +47,12 @@ export const Cart = () => {
 
             setCartData(prevCart => {
                 const updatedCourses = prevCart.courses.filter(course => course._id !== courseId);
-                const updatedTotalPrice = updatedCourses.reduce((sum, course) => sum + course.price, 0); // Recalculate total price
+                const updatedTotalPrice = updatedCourses.reduce((sum, course) => sum + course.price, 0);
 
                 return {
                     ...prevCart,
                     courses: updatedCourses,
-                    totalPrice: updatedTotalPrice, // Update total price
+                    totalPrice: updatedTotalPrice, 
                 };
             });
 

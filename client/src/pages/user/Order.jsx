@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
+import { Link } from "react-router-dom";
 
 export const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -12,6 +13,7 @@ export const Orders = () => {
       try {
         const response = await axiosInstance.get(`/order_Get/get-orders?userid=${userid}`);
         setOrders(response.data.orders);
+        console.log(orders);
       } catch (error) {
         console.error("Error fetching orders:", error?.response?.data?.message || error);
       } finally {
@@ -49,6 +51,11 @@ export const Orders = () => {
                       <div className="flex flex-col flex-grow">
                         <p className="text-gray-500 dark:text-gray-200 font-medium">{course.title || "No Title"}</p>
                         <p className="text-gray-500 dark:text-gray-200">₹{course.price}</p>
+                        <Link to={`/course-details/${course?.courseId}`}>
+                          <button className="btn btn-primary px-6 py-2 text-lg font-semibold rounded-lg bg-blue-500 hover:bg-blue-600 transition-all">
+                            More Details
+                          </button>
+                        </Link>
                       </div>
                     </li>
                   ))}
